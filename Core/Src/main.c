@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "delay_micros.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,7 +93,7 @@ int main(void)
   MX_TIM1_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  DWT_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
