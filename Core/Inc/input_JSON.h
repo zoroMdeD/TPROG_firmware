@@ -53,7 +53,10 @@ uint8_t  delay_us = 0;                  // задержка в десятках 
 
 void json_input(char *text);
 void gpio_analysis(char *text);
-//uint32_t parseValue(char *value);
+void info_analysis(char *text);
+
+uint32_t parseValue(char *value);
+uint8_t char_to_int(char *text);
 //void json_input(char *text);
 //void gpio_init(char *text);
 //void memory_size(char *text);
@@ -61,10 +64,7 @@ void gpio_analysis(char *text);
 //void parseControlRead(char *text);
 //void parseControlWrite(char *text);
 //void parseControlErase(char *text);
-//
-//uint8_t char_to_int (char *text);
-//
-//GPIO_TypeDef *port_selection (char *text);
+
 
 
 #endif /* INC_INPUT_JSON_H_ */

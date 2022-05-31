@@ -101,12 +101,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	  __HAL_RCC_GPIOF_CLK_ENABLE();
-//	  gpio_init(GPIOF, 0xAAAA, 1);
-//	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_All, GPIO_PIN_SET);
-char *teext = "PORTF";
-port_selection (teext);
-/*
+	  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTC\",\"PINS2\":\"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]\"}");
+	  json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"1\"}");
+	  HAL_Delay(1);
+	  /*
 	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)
 	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
 	{
