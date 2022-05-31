@@ -46,7 +46,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t json_com [1024];
+uint8_t flag_com = 0;             // флаг того, что команда пришла полностью. =1 значит можно выполнять команду
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,6 +101,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)
+	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
+	{
+		CDC_Transmit_FS(json_com, 1024);                  // отправка обратно по юсб текста команды
+		HAL_Delay(100);
+		CDC_Transmit_FS("\r\n", 2);
+		HAL_Delay(100);
+
+		for (uint16_t y = 0; y < 1024; y++)               // затирание массива для новой команды
+			json_com[y] = 0;
+		flag_com = 0;                                     // сбрасывание флага
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

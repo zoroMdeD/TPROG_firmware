@@ -94,6 +94,9 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
+extern uint8_t json_com [1024];
+extern uint8_t flag_com;
+uint16_t j = 0;                                           // счетчик для массива json_com, в котором будет собираться команда
 
 /* USER CODE END PRIVATE_VARIABLES */
 
@@ -261,12 +264,24 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-  return (USBD_OK);
+	  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+
+	  for (uint8_t i = 0; i < 64; i ++)
+	  {
+		  if (Buf [i] == '\r')                                // ждет конца строки, обозначающую окончание передачи команды
+		  {
+			  j = 0;
+			  flag_com = 1;
+			  break;
+		  }
+		  json_com [j] = Buf [i];
+		  j++;
+	  }
+
+	  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+	  return (USBD_OK);
   /* USER CODE END 6 */
 }
-
 /**
   * @brief  CDC_Transmit_FS
   *         Data to send over USB IN endpoint are sent over CDC interface
