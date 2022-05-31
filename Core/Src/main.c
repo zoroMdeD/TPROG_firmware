@@ -101,7 +101,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+//	  __HAL_RCC_GPIOF_CLK_ENABLE();
+//	  gpio_init(GPIOF, 0xAAAA, 1);
+//	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_All, GPIO_PIN_SET);
+char *teext = "PORTF";
+port_selection (teext);
+/*
 	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)
 	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
 	{

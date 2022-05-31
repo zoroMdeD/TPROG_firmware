@@ -20,7 +20,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
-
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -64,5 +63,59 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+/******************************************************************************************************/
+// Функция инициализирует указаные выводы в соответсвующее состояние (тут не хватает включение RCC, оно реализовано в ф-ции *port_selection
+void gpio_init(GPIO_TypeDef *port, uint32_t pins, uint8_t status)
+{
+	// структура для конфигурации выводов
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+	HAL_GPIO_DeInit(port, pins);                                // в начале деинициализация
+	if (status == 0)                                            // конфигурация как вход
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	else                                                        // конфигурация как выход
+	{
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	}
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Pin = pins;
+	HAL_GPIO_Init(port, &GPIO_InitStruct);                     // инициализация
+}
+
+/******************************************************************************************************/
+// Функция преобразует название порта (char)в его цифровое значение
+GPIO_TypeDef *port_selection (char *text)
+{
+	if (strcmp(text, "PORTA") == 0)
+	{
+		__HAL_RCC_GPIOA_CLK_ENABLE();
+		return GPIOA;
+	}
+	else if (strcmp(text, "PORTB") == 0)
+	{
+		__HAL_RCC_GPIOB_CLK_ENABLE();
+		return GPIOB;
+	}
+	else if (strcmp(text, "PORTC") == 0)
+	{
+		__HAL_RCC_GPIOC_CLK_ENABLE();
+		return GPIOC;
+	}
+	else if (strcmp(text, "PORTD") == 0)
+	{
+		__HAL_RCC_GPIOD_CLK_ENABLE();
+		return GPIOD;
+	}
+	else if (strcmp(text, "PORTE") == 0)
+	{
+		__HAL_RCC_GPIOE_CLK_ENABLE();
+		return GPIOE;
+	}
+	else if (strcmp(text, "PORTF") == 0)
+	{
+		__HAL_RCC_GPIOF_CLK_ENABLE();
+		return GPIOF;
+	}
+}
 /* USER CODE END 2 */
