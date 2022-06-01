@@ -50,21 +50,14 @@ uint8_t  write_num_action = 0;
 uint8_t  erase_num_action = 0;
 uint8_t  delay_us = 0;                  // задержка в десятках микросекунд
 
-
-void json_input(char *text);
-void gpio_analysis(char *text);
-void info_analysis(char *text);
+void json_input();
+void gpio_analysis();
+void info_analysis();
+void parseControlRead();
+void parseControlWrite();
+void parseControlErase();
 
 uint32_t parseValue(char *value);
 uint8_t char_to_int(char *text);
-//void json_input(char *text);
-//void gpio_init(char *text);
-//void memory_size(char *text);
-//
-//void parseControlRead(char *text);
-//void parseControlWrite(char *text);
-//void parseControlErase(char *text);
-
-
 
 #endif /* INC_INPUT_JSON_H_ */

@@ -13,25 +13,28 @@
 #include "input_JSON.h"
 #include <string.h>
 
+cJSON *json;  // пусть будет глобальной, используется разными функциями
+cJSON *CMD;
+
 /******************************************************************************************************/
 // Функция разбора полученной строки, смотрит тип команды и пересылает в соответсвующую ф-цию
 void json_input(char *text)
 {
-	cJSON *json = cJSON_Parse(text);
-	cJSON *CMD =  cJSON_GetObjectItem(json, "CMD");
+	json = cJSON_Parse(text);
+	CMD =  cJSON_GetObjectItem(json, "CMD");
 	cmd = CMD -> valuestring;
 
 	// выбор необходимой функции из всех доступных
 	if (strcmp(cmd, "GPIO") == 0)
-		gpio_analysis(text);
+		gpio_analysis();
 	else if (strcmp(cmd, "INFO") == 0)
-		info_analysis(text);
-//	else if (strcmp(cmd, "READ_ACTION") == 0)
-//		parseControlRead(text);
-//	else if (strcmp(cmd, "WRITE_ACTION") == 0)
-//		parseControlWrite(text);
-//	else if (strcmp(cmd, "ERASE_ACTION") == 0)
-//		parseControlErase(text);
+		info_analysis();
+	else if (strcmp(cmd, "READ_ACTION") == 0)
+		parseControlRead();
+	else if (strcmp(cmd, "WRITE_ACTION") == 0)
+		parseControlWrite();
+	else if (strcmp(cmd, "ERASE_ACTION") == 0)
+		parseControlErase();
 //    // функции чтения, записи и стирания
 //	else if (strcmp(cmd, "READ") == 0)
 //		read_all_memory();
@@ -40,16 +43,13 @@ void json_input(char *text)
 //	else if (strcmp(cmd, "ERASE") == 0)
 //		erase_memory();
 
-	cJSON_Delete(json);
-	cJSON_Delete(CMD);
 }
 
 /******************************************************************************************************/
 // Функция инициализирует выводы и записывает их в соответсвующие переменные
 // принимает адресные пины, пины данных и пины контроля (каждый пункт отдельной командой)
-void gpio_analysis(char *text)
+void gpio_analysis()
 {
-	cJSON *json = cJSON_Parse(text);
 	cJSON *Port;
 	cJSON *Pins;
 
@@ -88,16 +88,14 @@ void gpio_analysis(char *text)
 
 		gpio_init(ctrl_Port, ctrl_Pins, 1);
 	}
-	cJSON_Delete(json);
 	cJSON_Delete(Port);
 	cJSON_Delete(Pins);
 }
 
 /******************************************************************************************************/
 // Функция дешифрует размер памяти микросхемы, указаный в формате 0xFFFFF
-void info_analysis(char *text)
+void info_analysis()
 {
-	cJSON *json = cJSON_Parse(text);
 	char *mem = 0;                                      // переменная для временного хранения
 	memory = 0;                                         // обнуление предыдущего значения
 
@@ -137,11 +135,130 @@ void info_analysis(char *text)
 	buf = DELAY_US -> valuestring;
 	delay_us  = char_to_int (buf);
 
-	cJSON_Delete(json);
 	cJSON_Delete(READ_NUM_ACTION);
 	cJSON_Delete(WRITE_NUM_ACTION);
 	cJSON_Delete(ERASE_NUM_ACTION);
 	cJSON_Delete(DELAY_US);
+}
+
+
+/******************************************************************************************************/
+// Функция заполняет структуры действий (порядок действия при чтении)
+void parseControlRead ()
+{
+	// Нужно каждый цикл менять последнюю цифру в слове Action
+	char act[9] = {'A','c','t','i','o','n','0'};
+
+	cJSON *Port;          // запись в нулевой элемент структуры action [x][0]
+	cJSON *Number;        // запись в первый элемент структуры  action [x][1]
+	cJSON *Status;        // запись в второй элемент структуры  action [x][2]
+
+	// разбираем все действия, каждый цикл - следующий action
+	for (uint8_t i = 0; i < read_num_action; i++)
+	{
+		// преобразование строки, содержащий строку action, заменяется последний символ в строке (+49 это перевод в символы)
+		if (i < 9)	act[6] = i + '1';                                   // если номер действия это одно число
+		else
+		{
+			act[6] = (i + 1) / 10 + '0';                                // запись количества десятков
+			act[7] = (i + 1) - 10 + '0';                                // запись единиц
+			act[8] = 0;                                                 // запись 0 в конец строки, чтобы мк понял, что это конец строки (длина строки динамичная)
+		}
+
+		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "PORT");
+		port1 = Port -> valuestring;
+		actionRead.action [i][0] = port_selection(port1);
+
+		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "NUMBER");
+		buf = Number -> valuestring;
+		actionRead.action [i][1] = parseValue(buf);
+
+		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
+		buf = Status -> valuestring;
+
+		if (strcmp(buf, "Low") == 0)       actionRead.action [i][2] = 0;
+		else if (strcmp(buf, "High") == 0) actionRead.action [i][2] = 1;
+	}
+
+	cJSON_Delete(Port);
+	cJSON_Delete(Number);
+	cJSON_Delete(Status);
+}
+
+
+/******************************************************************************************************/
+// Функция заполняет структуры действий (порядок действия при записи)
+void parseControlWrite ()
+{
+	char act[9] = {'A','c','t','i','o','n','0'};
+
+	cJSON *Port;
+	cJSON *Number;
+	cJSON *Status;
+
+	for (uint8_t i = 0; i < write_num_action; i++)
+	{
+		if (i < 9)	act[6] = i + '1';
+		else
+		{
+			act[6] = (i + 1) / 10 + '0'; act[7] = (i + 1) - 10 + '0'; act[8] = 0;
+		}
+
+		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "PORT");
+		port1 = Port -> valuestring;
+		actionWrite.action [i][0] = port_selection(port1);
+
+		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "NUMBER");
+		buf = Number -> valuestring;
+		actionWrite.action [i][1] = parseValue(buf);
+
+		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "STATUS");
+		buf = Status -> valuestring;
+
+		if (strcmp(buf, "Low") == 0)       actionWrite.action [i][2] = 0;
+		else if (strcmp(buf, "High") == 0) actionWrite.action [i][2] = 1;
+	}
+	cJSON_Delete(Port);
+	cJSON_Delete(Number);
+	cJSON_Delete(Status);
+}
+
+
+/******************************************************************************************************/
+// Функция заполняет структуры действий (порядок действия при записи)
+void parseControlErase ()  // еще не проверял, но это чисто копия write и read
+{
+	char act[9] = {'A','c','t','i','o','n','0'};
+
+	cJSON *Port;
+	cJSON *Number;
+	cJSON *Status;
+
+	for (uint8_t i = 0; i < erase_num_action; i++)
+	{
+		if (i < 9)	act[6] = i + '1';
+		else
+		{
+			act[6] = (i + 1) / 10 + '0'; act[7] = (i + 1) - 10 + '0'; act[8] = 0;
+		}
+
+		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "PORT");
+		port1 = Port -> valuestring;
+		actionErase.action [i][0] = port_selection(port1);
+
+		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "NUMBER");
+		buf = Number -> valuestring;
+		actionErase.action [i][1] = parseValue(buf);
+
+		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "STATUS");
+		buf = Status -> valuestring;
+
+		if (strcmp(buf, "Low") == 0)       actionErase.action [i][2] = 0;
+		else if (strcmp(buf, "High") == 0) actionErase.action [i][2] = 1;
+	}
+	cJSON_Delete(Port);
+	cJSON_Delete(Number);
+	cJSON_Delete(Status);
 }
 
 
@@ -166,6 +283,7 @@ uint32_t parseValue(char *value)
 	}
 	return tmp;
 }
+
 
 /******************************************************************************************************/
 // Посимвольный перевод значения из char в int (работает только с десятичной системой счисления). Универсален
