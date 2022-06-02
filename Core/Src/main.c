@@ -105,11 +105,14 @@ int main(void)
 	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTA\",\"PINS1\":\"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]\"}");
 	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTC\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
 
-	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"1\"}");
-	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":\"Read\",\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
-
+	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"10\"}");
 	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"Low\"},\"Action5\":\"Write\",\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
+	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":\"Read\",\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
 	json_input("{\"CMD\":\"ERASE_ACTION\",\"Action1\":\"Erase\"}");
+
+	json_input("{\"CMD\":\"WRITE\"}");
+	json_input("{\"CMD\":\"READ\"}");
+
 	HAL_Delay(1);
 	  /*
 	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)

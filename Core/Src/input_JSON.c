@@ -11,6 +11,44 @@
 #include "cJSON.h"
 #include "input_JSON.h"
 #include <string.h>
+#include "command.h"
+
+// создание структур массивов для хранения порядка действий
+action actionRead;
+action actionWrite;
+action actionErase;
+
+// переменные по сути буфер
+char *cmd;
+char *port1;
+char *pins1;
+char *port2;
+char *pins2;
+char *buf;
+
+// переменные для хранения номеров адресных пинов (адрес может быть на нескольких портах)
+GPIO_TypeDef *addr_Port1 = 0;
+uint32_t      addr_Pins1 = 0;
+GPIO_TypeDef *addr_Port2 = 0;
+uint32_t      addr_Pins2 = 0;
+
+// переменные для хранения номеров data пинов
+GPIO_TypeDef *data_Port;
+uint32_t      data_Pins;
+
+// переменные для хранения номеров control пинов
+GPIO_TypeDef *ctrl_Port;
+uint32_t      ctrl_Pins;
+
+// структура для конфигурации выводов
+GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+// переменная для хранения объема памяти и количества команд при действиях read, write и erase
+uint64_t memory = 0;
+uint8_t  read_num_action  = 0;
+uint8_t  write_num_action = 0;
+uint8_t  erase_num_action = 0;
+uint8_t  value_delay = 0;                  // задержка в микросекундах
 
 
 /******************************************************************************************************/
@@ -32,11 +70,11 @@ void json_input(char *text)
 		parseControlWrite(text);
 	else if (strcmp(cmd, "ERASE_ACTION") == 0)
 		parseControlErase(text);
-//    // функции чтения, записи и стирания
-//	else if (strcmp(cmd, "READ") == 0)
-//		read_all_memory();
-//	else if (strcmp(cmd, "WRITE") == 0)
-//		write_memory(0xAA);
+    // функции чтения, записи и стирания
+	else if (strcmp(cmd, "READ") == 0)
+		read_all_memory();
+	else if (strcmp(cmd, "WRITE") == 0)
+		write_memory();
 //	else if (strcmp(cmd, "ERASE") == 0)
 //		erase_memory();
 
@@ -137,7 +175,7 @@ void info_analysis(char *text)
 
 	cJSON *DELAY_US = cJSON_GetObjectItem(json, "DELAY");
 	buf = DELAY_US -> valuestring;
-	delay_us  = char_to_int (buf);
+	value_delay  = char_to_int (buf);
 
 	cJSON_Delete(json);
 	free(MEMORY);
@@ -150,15 +188,16 @@ void info_analysis(char *text)
 
 /******************************************************************************************************/
 // Функция заполняет структуры действий (порядок действия при чтении)
+// нюанс: если действие это READ, WRITE или ERASE, ф-ция не найдет соответсвующее значение и просто запишет 100 в actionRead.action [i][0]
 void parseControlRead (char *text)
 {
 	cJSON *json = cJSON_Parse(text);
 	// Нужно каждый цикл менять последнюю цифру в слове Action
 	char act[9] = {'A','c','t','i','o','n','0'};
 
-	cJSON *Port;          // запись в нулевой элемент структуры action [x][0]
-	cJSON *Number;        // запись в первый элемент структуры  action [x][1]
-	cJSON *Status;        // запись в второй элемент структуры  action [x][2]
+	cJSON *Port;          // переменная для записи в нулевой элемент структуры action [x][0]
+	cJSON *Number;        // переменная для записи в первый элемент структуры  action [x][1]
+	cJSON *Status;        // переменная для записи в второй элемент структуры  action [x][2]
 
 	// разбираем все действия, каждый цикл - следующий action
 	for (uint8_t i = 0; i < read_num_action; i++)
@@ -172,6 +211,7 @@ void parseControlRead (char *text)
 			act[8] = 0;                                                 // запись 0 в конец строки, чтобы мк понял, что это конец строки (длина строки динамичная)
 		}
 
+		// сформулировав следующую по счету строку ActionN вынимаем из строки значение порта, номера вывода и его состояние
 		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "PORT");
 		port1 = Port -> valuestring;
 		actionRead.action [i][0] = port_selection(port1);
@@ -182,7 +222,7 @@ void parseControlRead (char *text)
 
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
 		buf = Status -> valuestring;
-
+		// Обработка строки со словом LOW или HIGH в цифровое значение (0 или 1)
 		if (strcmp(buf, "Low") == 0)       actionRead.action [i][2] = 0;
 		else if (strcmp(buf, "High") == 0) actionRead.action [i][2] = 1;
 	}

@@ -80,8 +80,9 @@ void gpio_init(GPIO_TypeDef *port, uint32_t pins, uint8_t status)
 	}
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Pin = pins;
-	HAL_GPIO_Init(port, &GPIO_InitStruct);                     // инициализация
+	HAL_GPIO_Init(port, &GPIO_InitStruct);                      // инициализация
 }
+
 
 /******************************************************************************************************/
 // Функция преобразует название порта (char)в его цифровое значение
