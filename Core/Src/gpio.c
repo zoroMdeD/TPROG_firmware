@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
+
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -48,6 +49,7 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
@@ -118,5 +120,7 @@ GPIO_TypeDef *port_selection (char *text)
 		__HAL_RCC_GPIOF_CLK_ENABLE();
 		return GPIOF;
 	}
+	else if (strcmp(text, "0") == 0)
+		return 0;
 }
 /* USER CODE END 2 */

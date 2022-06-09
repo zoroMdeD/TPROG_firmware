@@ -74,13 +74,14 @@ void read_all_memory()
 		// выполнение всех действий из структуры actionRead
 		for (uint8_t j = 0; j < read_num_action; j++)
 		{
-			if (actionRead.action[j][0] != 100)                     // если действие это переключение вывода
+			if (actionRead.action[j][0] != 0)                       // если действие это переключение вывода
 			{
 				if (actionRead.action[j][2] == 1)
 					 HAL_GPIO_WritePin((GPIO_TypeDef*)actionRead.action[j][0], actionRead.action[j][1], GPIO_PIN_SET);
 				else HAL_GPIO_WritePin((GPIO_TypeDef*)actionRead.action[j][0], actionRead.action[j][1], GPIO_PIN_RESET);
 			}
-			else read_memory();                                     // если действие это чтение
+			else if (strcmp(actionRead.action[j][2], "Read") == 0)
+				read_memory();                                     // если действие это чтение
 		}
 	}
 }
@@ -150,14 +151,14 @@ void write_memory(uint32_t data)
 		for (uint8_t j = 0; j < write_num_action; j++)
 		{
 			// если действие это переключение вывода
-			if (actionWrite.action[j][0] != 100)
+			if (actionWrite.action[j][0] != 0)
 			{
 				if (actionWrite.action[j][2] == 1)
 					HAL_GPIO_WritePin((GPIO_TypeDef*)actionWrite.action[j][0], actionWrite.action[j][1], GPIO_PIN_SET);
 				else HAL_GPIO_WritePin((GPIO_TypeDef*)actionWrite.action[j][0], actionWrite.action[j][1], GPIO_PIN_RESET);
 			}
 			// если действие это запись
-			else
+			else if (strcmp(actionWrite.action[j][2], "Write") == 0)
 			{
 				// чтобы данные не повторялись
 //				if (data_write == 0x55) data_write = 0xAA;

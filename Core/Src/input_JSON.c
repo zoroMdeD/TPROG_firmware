@@ -211,7 +211,7 @@ void parseControlRead (char *text)
 			act[8] = 0;                                                 // запись 0 в конец строки, чтобы мк понял, что это конец строки (длина строки динамичная)
 		}
 
-		// сформулировав следующую по счету строку ActionN вынимаем из строки значение порта, номера вывода и его состояние
+		// сформировав следующую по счету строку ActionN вынимаем из строки значение порта, номера вывода и его состояние
 		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "PORT");
 		port1 = Port -> valuestring;
 		actionRead.action [i][0] = port_selection(port1);
@@ -223,8 +223,9 @@ void parseControlRead (char *text)
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
 		buf = Status -> valuestring;
 		// Обработка строки со словом LOW или HIGH в цифровое значение (0 или 1)
-		if (strcmp(buf, "Low") == 0)       actionRead.action [i][2] = 0;
-		else if (strcmp(buf, "High") == 0) actionRead.action [i][2] = 1;
+		if (strcmp(buf, "Low") == 0)        actionRead.action [i][2] = 0;
+		else if (strcmp(buf, "High") == 0)  actionRead.action [i][2] = 1;
+		else if (strcmp(buf, "Read") == 0)  actionRead.action [i][2] = "Read"; // тут странно, сразу просто запись не работает, возможно прикол в типе данных (а в чем еще может быть)
 	}
 
 	cJSON_Delete(json);
@@ -264,8 +265,11 @@ void parseControlWrite (char *text)
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "STATUS");
 		buf = Status -> valuestring;
 
-		if (strcmp(buf, "Low") == 0)       actionWrite.action [i][2] = 0;
-		else if (strcmp(buf, "High") == 0) actionWrite.action [i][2] = 1;
+		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
+		buf = Status -> valuestring;
+		if (strcmp(buf, "Low") == 0)          actionWrite.action [i][2] = 0;
+		else if (strcmp(buf, "High") == 0)    actionWrite.action [i][2] = 1;
+		else if (strcmp(buf, "Write") == 0)   actionWrite.action [i][2] = "Write";
 	}
 	cJSON_Delete(json);
 	free(Port);

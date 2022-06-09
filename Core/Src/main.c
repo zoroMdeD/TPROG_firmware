@@ -89,10 +89,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
-  MX_SPI1_Init();
-  MX_TIM1_Init();
   MX_USB_DEVICE_Init();
+//  MX_I2C1_Init();
+//  MX_SPI1_Init();
+//  MX_TIM1_Init();
+//  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init();
   /* USER CODE END 2 */
@@ -101,13 +102,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  uint32_t infoo = "Read";
+
+    // CY62128
 	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTC\",\"PINS2\":\"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]\"}");
 	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTA\",\"PINS1\":\"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]\"}");
 	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTC\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
 
 	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"10\"}");
-	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"Low\"},\"Action5\":\"Write\",\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
-	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":\"Read\",\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
+	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
+	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
 	json_input("{\"CMD\":\"ERASE_ACTION\",\"Action1\":\"Erase\"}");
 
 	json_input("{\"CMD\":\"WRITE\"}");
