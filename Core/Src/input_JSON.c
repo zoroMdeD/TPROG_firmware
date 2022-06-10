@@ -35,10 +35,14 @@ uint32_t      addr_Pins2 = 0;
 // переменные для хранения номеров data пинов
 GPIO_TypeDef *data_Port;
 uint32_t      data_Pins;
+//GPIO_TypeDef *data_Port2;
+//uint32_t      data_Pins2;
 
 // переменные для хранения номеров control пинов
-GPIO_TypeDef *ctrl_Port;
-uint32_t      ctrl_Pins;
+GPIO_TypeDef *ctrl_Port1;
+uint32_t      ctrl_Pins1;
+GPIO_TypeDef *ctrl_Port2;
+uint32_t      ctrl_Pins2;
 
 // структура для конфигурации выводов
 GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -87,50 +91,72 @@ void json_input(char *text)
 // принимает адресные пины, пины данных и пины контроля (каждый пункт отдельной командой)
 void gpio_analysis(char *text)
 {
-	cJSON *Port;
-	cJSON *Pins;
-
 	cJSON *json = cJSON_Parse(text);
 	cJSON *Func = cJSON_GetObjectItem(json, "FUNC");
 	buf = Func -> valuestring;
 
-	Port = cJSON_GetObjectItem(json, "PORT1");                   // получение названия порта1
-	port1 = Port -> valuestring;
-	Pins = cJSON_GetObjectItem(json, "PINS1");                   // получение номеров выводов1
-	pins1 = Pins -> valuestring;
-	Port = cJSON_GetObjectItem(json, "PORT2");                   // получение названия порта2
-	port2 = Port -> valuestring;
-	Pins = cJSON_GetObjectItem(json, "PINS2");                   // получение номеров выводов2
-	pins2 = Pins -> valuestring;
-
-	// разбор, для какой задачи были получены порт и выводы
-	if (strcmp(buf, "ADDR") == 0)
+	if (strcmp(buf, "PWM") == 0)                                     // если инициализация ШИМ
 	{
-		addr_Port1 = port_selection(port1);                      // преобразование символа значения порта в цифровое значение
-		addr_Pins1 = parseValue(pins1);
-		addr_Port2 = port_selection(port2);
-		addr_Pins2 = parseValue(pins2);
+		uint32_t psc = 0;
+		uint32_t period = 0;
+		uint8_t tim = 0;
 
-		gpio_init(addr_Port1, addr_Pins1, 1);                    // инициализация пинов как выход
-		gpio_init(addr_Port2, addr_Pins2, 1);
-	}
-	else if (strcmp(buf, "DATA") == 0)
-	{
-		data_Port = port_selection(port1);
-		data_Pins = parseValue(pins1);
-	}
-	else if (strcmp(buf, "CONTROL") == 0)
-	{
-		ctrl_Port = port_selection(port1);
-		ctrl_Pins = parseValue(pins1);
+		cJSON *TIM = cJSON_GetObjectItem(json, "TIM");
+		buf = TIM -> valuestring;
+		if (strcmp(buf, "TIM1") == 0) tim = 1;                       // пока есть только два таймера: tim1 и tim2
+		else tim = 2;
+		cJSON *PSC = cJSON_GetObjectItem(json, "PSC");
+		psc = PSC -> valuestring;
+		cJSON *PERIOD = cJSON_GetObjectItem(json, "PERIOD");
+		period = PERIOD -> valuestring;
 
-		gpio_init(ctrl_Port, ctrl_Pins, 1);
+
+
 	}
-	cJSON_Delete(json);
-	free(Port);
-	free(Pins);
+	else                                                             // если инициализация выводов
+	{
+		cJSON *Port;
+		cJSON *Pins;
+
+		Port = cJSON_GetObjectItem(json, "PORT1");                   // получение названия порта1
+		port1 = Port -> valuestring;
+		Pins = cJSON_GetObjectItem(json, "PINS1");                   // получение номеров выводов1
+		pins1 = Pins -> valuestring;
+		Port = cJSON_GetObjectItem(json, "PORT2");                   // получение названия порта2
+		port2 = Port -> valuestring;
+		Pins = cJSON_GetObjectItem(json, "PINS2");                   // получение номеров выводов2
+		pins2 = Pins -> valuestring;
+
+		// разбор, для какой задачи были получены порт и выводы
+		if (strcmp(buf, "ADDR") == 0)
+		{
+			addr_Port1 = port_selection(port1);                      // преобразование символа значения порта в цифровое значение
+			addr_Pins1 = parseValue(pins1);
+			addr_Port2 = port_selection(port2);
+			addr_Pins2 = parseValue(pins2);
+
+			gpio_init(addr_Port1, addr_Pins1, 1);                    // инициализация пинов как выход
+			gpio_init(addr_Port2, addr_Pins2, 1);
+		}
+		else if (strcmp(buf, "DATA") == 0)
+		{
+			data_Port = port_selection(port1);
+			data_Pins = parseValue(pins1);
+		}
+		else if (strcmp(buf, "CONTROL") == 0)
+		{
+			ctrl_Port1 = port_selection(port1);
+			ctrl_Pins1 = parseValue(pins1);
+			ctrl_Port2 = port_selection(port2);
+			ctrl_Pins2 = parseValue(pins2);
+			gpio_init(ctrl_Port1, ctrl_Pins1, 1);
+			gpio_init(ctrl_Port2, ctrl_Pins2, 1);
+		}
+		cJSON_Delete(json);
+		free(Port);
+		free(Pins);
+	}
 	free(Func);
-
 }
 
 /******************************************************************************************************/
@@ -308,8 +334,9 @@ void parseControlErase (char *text)  // еще не проверял, но эт�
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "STATUS");
 		buf = Status -> valuestring;
 
-		if (strcmp(buf, "Low") == 0)       actionErase.action [i][2] = 0;
-		else if (strcmp(buf, "High") == 0) actionErase.action [i][2] = 1;
+		if (strcmp(buf, "Low") == 0)          actionErase.action [i][2] = 0;
+		else if (strcmp(buf, "High") == 0)    actionErase.action [i][2] = 1;
+		else if (strcmp(buf, "Erase") == 0)   actionWrite.action [i][2] = "Erase";
 	}
 	cJSON_Delete(json);
 	free(Port);
