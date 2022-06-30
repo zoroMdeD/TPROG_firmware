@@ -18,6 +18,7 @@ typedef struct action
 
 void json_input(char *text);
 void gpio_analysis(char *text);
+void I2C_analysis(char *text);
 void info_analysis(char *text);
 void parseControlRead(char *text);
 void parseControlWrite(char *text);
@@ -25,5 +26,6 @@ void parseControlErase(char *text);
 
 uint32_t parseValue(char *value);
 uint8_t char_to_int(char *text);
+uint32_t char_hex_to_int (char *text);
 
 #endif /* INC_INPUT_JSON_H_ */

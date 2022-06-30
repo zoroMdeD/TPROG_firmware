@@ -47,6 +47,9 @@ uint32_t      ctrl_Pins2;
 // структура для конфигурации выводов
 GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+// переменная для хранения I2C адреса микросхемы
+uint8_t  addr_I2C = 0;
+
 // переменная для хранения объема памяти и количества команд при действиях read, write и erase
 uint64_t memory = 0;
 uint8_t  read_num_action  = 0;
@@ -66,6 +69,8 @@ void json_input(char *text)
 	// выбор необходимой функции из всех доступных
 	if (strcmp(cmd, "GPIO") == 0)
 		gpio_analysis(text);
+	else if (strcmp(cmd, "I2C") == 0)
+		I2C_analysis(text);
 	else if (strcmp(cmd, "INFO") == 0)
 		info_analysis(text);
 	else if (strcmp(cmd, "READ_ACTION") == 0)
@@ -74,6 +79,7 @@ void json_input(char *text)
 		parseControlWrite(text);
 	else if (strcmp(cmd, "ERASE_ACTION") == 0)
 		parseControlErase(text);
+
     // функции чтения, записи и стирания
 	else if (strcmp(cmd, "READ") == 0)
 		read_all_memory();
@@ -95,26 +101,25 @@ void gpio_analysis(char *text)
 	cJSON *Func = cJSON_GetObjectItem(json, "FUNC");
 	buf = Func -> valuestring;
 
-	if (strcmp(buf, "PWM") == 0)                                     // если инициализация ШИМ
-	{
-		uint32_t psc = 0;
-		uint32_t period = 0;
-		uint8_t tim = 0;
 
-		cJSON *TIM = cJSON_GetObjectItem(json, "TIM");
-		buf = TIM -> valuestring;
-		if (strcmp(buf, "TIM1") == 0) tim = 1;                       // пока есть только два таймера: tim1 и tim2
-		else tim = 2;
-		cJSON *PSC = cJSON_GetObjectItem(json, "PSC");
-		psc = PSC -> valuestring;
-		cJSON *PERIOD = cJSON_GetObjectItem(json, "PERIOD");
-		period = PERIOD -> valuestring;
-
-
-
-	}
-	else                                                             // если инициализация выводов
-	{
+	// инициализация
+//	if (strcmp(buf, "PWM") == 0)                                     // если инициализация ШИМ
+//	{
+//		uint32_t psc = 0;
+//		uint32_t period = 0;
+//		uint8_t tim = 0;
+//
+//		cJSON *TIM = cJSON_GetObjectItem(json, "TIM");
+//		buf = TIM -> valuestring;
+//		if (strcmp(buf, "TIM1") == 0) tim = 1;                       // пока есть только два таймера: tim1 и tim2
+//		else tim = 2;
+//		cJSON *PSC = cJSON_GetObjectItem(json, "PSC");
+//		psc = PSC -> valuestring;
+//		cJSON *PERIOD = cJSON_GetObjectItem(json, "PERIOD");
+//		period = PERIOD -> valuestring;
+//	}
+//	else                                                             // если инициализация выводов
+//	{
 		cJSON *Port;
 		cJSON *Pins;
 
@@ -155,36 +160,33 @@ void gpio_analysis(char *text)
 		cJSON_Delete(json);
 		free(Port);
 		free(Pins);
-	}
+//	}
 	free(Func);
 }
 
+
 /******************************************************************************************************/
-// Функция дешифрует размер памяти микросхемы, указаный в формате 0xFFFFF
+void I2C_analysis(char *text)
+{
+	cJSON *json = cJSON_Parse(text);
+	cJSON *ADDR_I2C = cJSON_GetObjectItem(json, "ADDR_I2C");
+	buf = ADDR_I2C -> valuestring;
+	addr_I2C = char_hex_to_int(buf);
+}
+
+
+/******************************************************************************************************/
+// Функция инициализирует I2C шину и записывает адрес микросхемы
 void info_analysis(char *text)
 {
-	char *mem = 0;                                      // переменная для временного хранения
+//	char *mem = 0;                                      // переменная для временного хранения
 	memory = 0;                                         // обнуление предыдущего значения
 
 	cJSON *json = cJSON_Parse(text);
 	// получение объема памяти в HEX формате
 	cJSON *MEMORY = cJSON_GetObjectItem(json, "MEMORY");
-	mem = MEMORY -> valuestring;
-
-	//удаление приписки 0x
-	if (*mem == '0') mem++;
-	if (*mem == 'x') mem++;
-
-	// посимвольный перевод значения из char в int в 16-ти системе
-	uint32_t size_mem = strlen(mem);                    // хз почему, но подстановка в цикл strlen не работает
-	for (unsigned i = 0; i < size_mem; i++)             // цикл для опознования 16ти цифр
-	{
-		if (*mem>='0' && *mem<='9')      memory +=(*mem)-'0';
-		else if (*mem>='A' && *mem<='F') memory +=10+(*mem)-'A';
-		else if (*mem>='a' && *mem<='f') memory +=10+(*mem)-'a';
-		memory = memory << 4;
-		mem++;                                          // затирание первого символа
-	}
+	buf = MEMORY -> valuestring;
+	memory = char_hex_to_int(buf);
 
 	// парсер количества действий, необходиных для одноименных операций
 	cJSON *READ_NUM_ACTION = cJSON_GetObjectItem(json, "READ");
@@ -381,6 +383,29 @@ uint8_t char_to_int (char *text)
 		for (unsigned j = (i - 1); j > 0; j--)
 			data_buf *= 10;                              // это вместо 10^i
 		data += data_buf;
+		text++;                                          // затирание первого символа
+	}
+	return data;
+}
+
+
+/******************************************************************************************************/
+// Посимвольный перевод значения из char (число формата HEX) в int
+uint32_t char_hex_to_int (char *text)
+{
+	//удаление приписки 0x
+	if (*text == '0') text++;
+	if (*text == 'x') text++;
+
+	// посимвольный перевод значения из char в int в 16-ти системе
+	uint32_t data = 0;
+	uint32_t size_text = strlen(text);                   // хз почему, но подстановка в цикл strlen не работает
+	for (unsigned i = 0; i < size_text; i++)             // цикл для опознования 16ти цифр
+	{
+		if (i != 0) data = data << 4;
+		if (*text>='0' && *text<='9')      data +=(*text)-'0';
+		else if (*text>='A' && *text<='F') data +=10+(*text)-'A';
+		else if (*text>='a' && *text<='f') data +=10+(*text)-'a';
 		text++;                                          // затирание первого символа
 	}
 	return data;
