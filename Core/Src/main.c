@@ -27,6 +27,15 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "delay_micros.h"
+#include "input_JSON.h"
+#include <string.h>
+#include <stdlib.h>
+
+//extern action actionRead;
+//extern action actionWrite;
+//extern action actionErase;
+
+extern I2C_HandleTypeDef hi2c1;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,28 +106,42 @@ int main(void)
   /* USER CODE BEGIN 2 */
   DWT_Init();
   /* USER CODE END 2 */
-	timer_init(167, 499, 2);
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-
-    // CY62128
-	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTC\",\"PINS2\":\"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]\"}");
-	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTA\",\"PINS1\":\"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]\"}");
-	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTC\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
-
-	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x95\"}");
-
-	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"10\"}");
-	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
-	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
-	json_input("{\"CMD\":\"ERASE_ACTION\",\"Action1\":\"Erase\"}");
+//  test I2C
+	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x2F\"}");
+	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFF\",\"READ\":\"2\",\"WRITE\":\"2\",\"ERASE\":\"2\"}");
+	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0xFAFA\",\"STATUS\":\"0\"},\"Action2\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x1\",\"STATUS\":\"0\"}}");
+	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0\",\"STATUS\":\"1\"},\"Action2\":{\"PORT\":\"I2C\",\"NUMBER\":\"0\",\"STATUS\":\"25\"}}");
 
 	json_input("{\"CMD\":\"WRITE\"}");
 	json_input("{\"CMD\":\"READ\"}");
-//
+	HAL_Delay(10);
+
+
+
+
+//	  json_input("");
+// CY62128
+//	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTC\",\"PINS2\":\"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]\"}");
+//	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTA\",\"PINS1\":\"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]\"}");
+//	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTC\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
+
+//	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"10\"}");
+//	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
+
+//	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"3\",\"WRITE\":\"8\",\"ERASE\":\"1\",\"DELAY\":\"10\"}");
+//	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0hFF\",\"STATUS\":\"0\"},\"Action2\":{\"PORT\":\"I2C\",\"NUMBER\":\"0hFF\",\"STATUS\":\"0\"},\"Action3\":{\"PORT\":\"I2C\",\"NUMBER\":\"0hFF\",\"STATUS\":\"0\"}}");
+
+//	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}");
+//	json_input("{\"CMD\":\"ERASE_ACTION\",\"Action1\":\"Erase\"}");
+
+//	json_input("{\"CMD\":\"WRITE\"}");
+//	json_input("{\"CMD\":\"READ\"}");
+
 //	HAL_Delay(1);
 	  /*
 	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)

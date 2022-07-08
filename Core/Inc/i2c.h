@@ -35,7 +35,8 @@ extern "C" {
 extern I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN Private defines */
-
+HAL_StatusTypeDef I2C_send(uint8_t addr, uint32_t data);
+HAL_StatusTypeDef I2C_receive(uint8_t addr, uint32_t addr_reg, uint32_t size);
 /* USER CODE END Private defines */
 
 void MX_I2C1_Init(void);

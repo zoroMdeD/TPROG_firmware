@@ -112,5 +112,32 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
 }
 
 /* USER CODE BEGIN 1 */
+// Ф-ция отправляет по I2C шине заданные данные на заданный адрес
+HAL_StatusTypeDef I2C_send(uint8_t addr, uint32_t data)
+{
+	HAL_StatusTypeDef status;
+	uint16_t Addr = (addr << 1) + 1;
+	// проверить, нормально ли будет работать запись в определенный регистр (указывать в дата первм элементом адрес регистра)
+	status = HAL_I2C_Master_Transmit(&hi2c1, Addr, &data, 4, HAL_MAX_DELAY);   // HAL_MAX_Delay уменьшить скорее всего придется
+	return status;
+}
+
+
+// возможно data через указатель должна идти
+// писать в глобальную переменную???
+HAL_StatusTypeDef I2C_receive(uint8_t addr, uint32_t addr_reg, uint32_t size)
+{
+	uint8_t data[10] = {0,};   // динамически определять объем в зависимости от size??
+	HAL_StatusTypeDef status;
+	uint16_t Addr = addr << 1;
+	// есть вопросы по тому, сколько считывать и как
+	if (addr_reg > 0)
+		status = HAL_I2C_Mem_Read(&hi2c1, Addr, addr_reg, 1, &data, size, HAL_MAX_DELAY);
+	else
+		status = HAL_I2C_Master_Receive(&hi2c1, Addr, &data, size, HAL_MAX_DELAY);
+
+	// отправлять все считанное сразу по USB на комп?
+	return status;
+}
 
 /* USER CODE END 1 */

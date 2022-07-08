@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include <string.h>
+#include <stdlib.h>
 #include "input_JSON.h"
 #include "command.h"
 #include "usb_device.h"
@@ -35,6 +36,8 @@ extern action actionRead;
 extern action actionWrite;
 extern action actionErase;
 
+extern uint8_t  addr_I2C;
+
 extern uint64_t memory;
 extern uint8_t  read_num_action;
 extern uint8_t  write_num_action;
@@ -48,40 +51,53 @@ extern uint8_t  value_delay;
 // Если используется для выставления адреса второй порт, в нем выводы должны идти так же по порядку, но не обязательно с 0
 void read_all_memory()
 {
-	uint16_t number = 0;                      // номер бита, с которого начинается отсчет второго порта адреса
-	gpio_init(data_Port, data_Pins, 0);       // инициализация выводов как вход
-
-	// вычисление максимального значения адреса
-	addr_calculation ();
-
-	// цикл, отсчитывающий адреса от 0 до максимального значения
-	for (uint64_t i = 0; i < addr_max; i++)
+	// если чтение не связано с I2C
+	if (strcmp(actionRead.action [0][0], "I2C") != 0)
 	{
-		// сброс адресных пинов в 0
-		HAL_GPIO_WritePin(addr_Port1, addr_Pins1, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(addr_Port2, addr_Pins2, GPIO_PIN_RESET);
+		uint16_t number = 0;                      // номер бита, с которого начинается отсчет второго порта адреса
+		gpio_init(data_Port, data_Pins, 0);       // инициализация выводов как вход
 
-		// выставление адреса на пинах
-		HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);    // выставление адреса на первом порту
-		if (i > 0xFFFF)
+		// вычисление максимального значения адреса
+		addr_calculation ();
+
+		// цикл, отсчитывающий адреса от 0 до максимального значения
+		for (uint64_t i = 0; i < addr_max; i++)
 		{
-			// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
-			uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
-			// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
-			HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
-		}
+			// сброс адресных пинов в 0
+			HAL_GPIO_WritePin(addr_Port1, addr_Pins1, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(addr_Port2, addr_Pins2, GPIO_PIN_RESET);
 
+			// выставление адреса на пинах
+			// выставление адреса на первом порту
+			HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);
+			if (i > 0xFFFF)
+			{
+				// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
+				uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
+				// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
+				HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
+			}
+
+			// выполнение всех действий из структуры actionRead
+			for (uint8_t j = 0; j < read_num_action; j++)
+			{
+				if (actionRead.action[j][0] != 0)                       // если действие это переключение вывода
+				{
+					if (actionRead.action[j][2] == 1)
+						 HAL_GPIO_WritePin((GPIO_TypeDef*)actionRead.action[j][0], actionRead.action[j][1], GPIO_PIN_SET);
+					else HAL_GPIO_WritePin((GPIO_TypeDef*)actionRead.action[j][0], actionRead.action[j][1], GPIO_PIN_RESET);
+				}
+				if (strcmp(actionRead.action [j][2], "Read") == 0)
+					read_memory();                                     // если действие это чтение
+			}
+		}
+	}
+	else
+	{
 		// выполнение всех действий из структуры actionRead
 		for (uint8_t j = 0; j < read_num_action; j++)
 		{
-			if (actionRead.action[j][0] != 0)                       // если действие это переключение вывода
-			{
-				if (actionRead.action[j][2] == 1)
-					 HAL_GPIO_WritePin((GPIO_TypeDef*)actionRead.action[j][0], actionRead.action[j][1], GPIO_PIN_SET);
-				else HAL_GPIO_WritePin((GPIO_TypeDef*)actionRead.action[j][0], actionRead.action[j][1], GPIO_PIN_RESET);
-			}
-			else if (strcmp(actionRead.action[j][2], "Read") == 0)
-				read_memory();                                     // если действие это чтение
+			I2C_receive(addr_I2C, actionRead.action [j][1], actionRead.action [j][2]);
 		}
 	}
 }
@@ -125,49 +141,58 @@ void read_memory()
 // Функция записывает в память 0хАА
 void write_memory(uint32_t data)
 {
-	addr_calculation ();                      // вычисление максимального значения адреса
-//	uint32_t data_write = data;               // записываемые данные
-	uint32_t data_write = 0xAA;               // записываем АА во все ячейки памяти
-	gpio_init(data_Port, data_Pins, 1);       // инициализация выводов как выход
-
-	// цикл, отсчитывающий адреса до максимального значения
-	for (uint64_t i = 0; i < addr_max; i++)
+	// если отправка не связана с I2C
+	if (strcmp(actionWrite.action [0][0], "I2C") != 0)
 	{
-		// сброс адресных пинов
-		HAL_GPIO_WritePin(addr_Port1, addr_Pins1, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(addr_Port2, addr_Pins2, GPIO_PIN_RESET);
+		addr_calculation ();                      // вычисление максимального значения адреса
+	//	uint32_t data_write = data;               // записываемые данные
+		uint32_t data_write = 0xAA;               // записываем АА во все ячейки памяти
+		gpio_init(data_Port, data_Pins, 1);       // инициализация выводов как выход
 
-		// выставление адреса на пинах
-		HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);    // выставление адреса на первом порту
-		if (i > 0xFFFF)
+		// цикл, отсчитывающий адреса до максимального значения
+		for (uint64_t i = 0; i < addr_max; i++)
 		{
-			// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
-			uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
-			// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
-			HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
-		}
+			// сброс адресных пинов
+			HAL_GPIO_WritePin(addr_Port1, addr_Pins1, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(addr_Port2, addr_Pins2, GPIO_PIN_RESET);
 
-		// выполнение всех действий из массивов
-		for (uint8_t j = 0; j < write_num_action; j++)
-		{
-			// если действие это переключение вывода
-			if (actionWrite.action[j][0] != 0)
+			// выставление адреса на пинах
+			HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);    // выставление адреса на первом порту
+			if (i > 0xFFFF)
 			{
-				if (actionWrite.action[j][2] == 1)
-					HAL_GPIO_WritePin((GPIO_TypeDef*)actionWrite.action[j][0], actionWrite.action[j][1], GPIO_PIN_SET);
-				else HAL_GPIO_WritePin((GPIO_TypeDef*)actionWrite.action[j][0], actionWrite.action[j][1], GPIO_PIN_RESET);
+				// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
+				uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
+				// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
+				HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
 			}
-			// если действие это запись
-			else if (strcmp(actionWrite.action[j][2], "Write") == 0)
+
+			// выполнение всех действий из массивов
+			for (uint8_t j = 0; j < write_num_action; j++)
 			{
-				// чтобы данные не повторялись
-//				if (data_write == 0x55) data_write = 0xAA;
-//				else data_write = 0x55;
-				HAL_GPIO_WritePin((GPIO_TypeDef*)data_Port, data_Pins, GPIO_PIN_RESET);    // обнуление всех выводов
-				HAL_GPIO_WritePin((GPIO_TypeDef*)data_Port, data_write, GPIO_PIN_SET);	   // установка данных на пины
-				delay_us(value_delay);                          // задержка
+				// если действие это переключение вывода
+				if (actionWrite.action[j][0] != 0)
+				{
+					if (actionWrite.action[j][2] == 1)
+						HAL_GPIO_WritePin((GPIO_TypeDef*)actionWrite.action[j][0], actionWrite.action[j][1], GPIO_PIN_SET);
+					else HAL_GPIO_WritePin((GPIO_TypeDef*)actionWrite.action[j][0], actionWrite.action[j][1], GPIO_PIN_RESET);
+				}
+				// если действие это запись
+				if (strcmp(actionWrite.action[j][2], "Write") == 0)
+				{
+					// чтобы данные не повторялись
+	//				if (data_write == 0x55) data_write = 0xAA;
+	//				else data_write = 0x55;
+					HAL_GPIO_WritePin((GPIO_TypeDef*)data_Port, data_Pins, GPIO_PIN_RESET);    // обнуление всех выводов
+					HAL_GPIO_WritePin((GPIO_TypeDef*)data_Port, data_write, GPIO_PIN_SET);	   // установка данных на пины
+					delay_us(value_delay);                          // задержка
+				}
 			}
 		}
+	}
+	// выполнение всех действий из структуры actionWrite
+	for (uint8_t j = 0; j < write_num_action; j++)
+	{
+		I2C_send(addr_I2C, actionWrite.action [j][1]);
 	}
 }
 

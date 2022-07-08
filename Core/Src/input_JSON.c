@@ -11,7 +11,7 @@
 #include "cJSON.h"
 #include "input_JSON.h"
 #include <string.h>
-#include "command.h"
+#include <stdlib.h>
 
 // создание структур массивов для хранения порядка действий
 action actionRead;
@@ -101,66 +101,46 @@ void gpio_analysis(char *text)
 	cJSON *Func = cJSON_GetObjectItem(json, "FUNC");
 	buf = Func -> valuestring;
 
+	cJSON *Port;
+	cJSON *Pins;
 
-	// инициализация
-//	if (strcmp(buf, "PWM") == 0)                                     // если инициализация ШИМ
-//	{
-//		uint32_t psc = 0;
-//		uint32_t period = 0;
-//		uint8_t tim = 0;
-//
-//		cJSON *TIM = cJSON_GetObjectItem(json, "TIM");
-//		buf = TIM -> valuestring;
-//		if (strcmp(buf, "TIM1") == 0) tim = 1;                       // пока есть только два таймера: tim1 и tim2
-//		else tim = 2;
-//		cJSON *PSC = cJSON_GetObjectItem(json, "PSC");
-//		psc = PSC -> valuestring;
-//		cJSON *PERIOD = cJSON_GetObjectItem(json, "PERIOD");
-//		period = PERIOD -> valuestring;
-//	}
-//	else                                                             // если инициализация выводов
-//	{
-		cJSON *Port;
-		cJSON *Pins;
+	Port = cJSON_GetObjectItem(json, "PORT1");                   // получение названия порта1
+	port1 = Port -> valuestring;
+	Pins = cJSON_GetObjectItem(json, "PINS1");                   // получение номеров выводов1
+	pins1 = Pins -> valuestring;
+	Port = cJSON_GetObjectItem(json, "PORT2");                   // получение названия порта2
+	port2 = Port -> valuestring;
+	Pins = cJSON_GetObjectItem(json, "PINS2");                   // получение номеров выводов2
+	pins2 = Pins -> valuestring;
 
-		Port = cJSON_GetObjectItem(json, "PORT1");                   // получение названия порта1
-		port1 = Port -> valuestring;
-		Pins = cJSON_GetObjectItem(json, "PINS1");                   // получение номеров выводов1
-		pins1 = Pins -> valuestring;
-		Port = cJSON_GetObjectItem(json, "PORT2");                   // получение названия порта2
-		port2 = Port -> valuestring;
-		Pins = cJSON_GetObjectItem(json, "PINS2");                   // получение номеров выводов2
-		pins2 = Pins -> valuestring;
+	// разбор, для какой задачи были получены порт и выводы
+	if (strcmp(buf, "ADDR") == 0)
+	{
+		addr_Port1 = port_selection(port1);                      // преобразование символа значения порта в цифровое значение
+		addr_Pins1 = parseValue(pins1);
+		addr_Port2 = port_selection(port2);
+		addr_Pins2 = parseValue(pins2);
 
-		// разбор, для какой задачи были получены порт и выводы
-		if (strcmp(buf, "ADDR") == 0)
-		{
-			addr_Port1 = port_selection(port1);                      // преобразование символа значения порта в цифровое значение
-			addr_Pins1 = parseValue(pins1);
-			addr_Port2 = port_selection(port2);
-			addr_Pins2 = parseValue(pins2);
-
-			gpio_init(addr_Port1, addr_Pins1, 1);                    // инициализация пинов как выход
-			gpio_init(addr_Port2, addr_Pins2, 1);
-		}
-		else if (strcmp(buf, "DATA") == 0)
-		{
-			data_Port = port_selection(port1);
-			data_Pins = parseValue(pins1);
-		}
-		else if (strcmp(buf, "CONTROL") == 0)
-		{
-			ctrl_Port1 = port_selection(port1);
-			ctrl_Pins1 = parseValue(pins1);
-			ctrl_Port2 = port_selection(port2);
-			ctrl_Pins2 = parseValue(pins2);
-			gpio_init(ctrl_Port1, ctrl_Pins1, 1);
-			gpio_init(ctrl_Port2, ctrl_Pins2, 1);
-		}
-		cJSON_Delete(json);
-		free(Port);
-		free(Pins);
-//	}
+		gpio_init(addr_Port1, addr_Pins1, 1);                    // инициализация пинов как выход
+		gpio_init(addr_Port2, addr_Pins2, 1);
+	}
+	else if (strcmp(buf, "DATA") == 0)
+	{
+		data_Port = port_selection(port1);
+		data_Pins = parseValue(pins1);
+	}
+	else if (strcmp(buf, "CONTROL") == 0)
+	{
+		ctrl_Port1 = port_selection(port1);
+		ctrl_Pins1 = parseValue(pins1);
+		ctrl_Port2 = port_selection(port2);
+		ctrl_Pins2 = parseValue(pins2);
+		gpio_init(ctrl_Port1, ctrl_Pins1, 1);
+		gpio_init(ctrl_Port2, ctrl_Pins2, 1);
+	}
+	cJSON_Delete(json);
+	free(Port);
+	free(Pins);
 	free(Func);
 }
 
@@ -172,6 +152,7 @@ void I2C_analysis(char *text)
 	cJSON *ADDR_I2C = cJSON_GetObjectItem(json, "ADDR_I2C");
 	buf = ADDR_I2C -> valuestring;
 	addr_I2C = char_hex_to_int(buf);
+	MX_I2C1_Init();
 }
 
 
@@ -179,7 +160,6 @@ void I2C_analysis(char *text)
 // Функция инициализирует I2C шину и записывает адрес микросхемы
 void info_analysis(char *text)
 {
-//	char *mem = 0;                                      // переменная для временного хранения
 	memory = 0;                                         // обнуление предыдущего значения
 
 	cJSON *json = cJSON_Parse(text);
@@ -216,7 +196,6 @@ void info_analysis(char *text)
 
 /******************************************************************************************************/
 // Функция заполняет структуры действий (порядок действия при чтении)
-// нюанс: если действие это READ, WRITE или ERASE, ф-ция не найдет соответсвующее значение и просто запишет 100 в actionRead.action [i][0]
 void parseControlRead (char *text)
 {
 	cJSON *json = cJSON_Parse(text);
@@ -240,22 +219,30 @@ void parseControlRead (char *text)
 		}
 
 		// сформировав следующую по счету строку ActionN вынимаем из строки значение порта, номера вывода и его состояние
+		// либо место порта I2C, data (в hex формате)
 		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "PORT");
 		port1 = Port -> valuestring;
 		actionRead.action [i][0] = port_selection(port1);
 
 		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "NUMBER");
 		buf = Number -> valuestring;
-		actionRead.action [i][1] = parseValue(buf);
+//		actionRead.action [i][1] = parseValue(buf);
+
+		if (strcmp(actionRead.action [i][0], "I2C") == 0)
+			actionRead.action [i][1] = char_hex_to_int(buf);
+		else
+			actionRead.action [i][1] = parseValue(buf);
 
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
 		buf = Status -> valuestring;
+
 		// Обработка строки со словом LOW или HIGH в цифровое значение (0 или 1)
 		if (strcmp(buf, "Low") == 0)        actionRead.action [i][2] = 0;
 		else if (strcmp(buf, "High") == 0)  actionRead.action [i][2] = 1;
-		else if (strcmp(buf, "Read") == 0)  actionRead.action [i][2] = "Read"; // тут странно, сразу просто запись не работает, возможно прикол в типе данных (а в чем еще может быть)
+		else if (strcmp(buf, "Read") == 0)  actionRead.action [i][2] = "Read";   // = buf и вариации не получается пока сделать, подумать еще
+		// если сюда записаны данные о длине чтения по I2C шине
+		actionRead.action [i][2] = *buf - 48;
 	}
-
 	cJSON_Delete(json);
 	free(Port);
 	free(Number);
@@ -288,7 +275,11 @@ void parseControlWrite (char *text)
 
 		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "NUMBER");
 		buf = Number -> valuestring;
-		actionWrite.action [i][1] = parseValue(buf);
+
+		if (strcmp(actionWrite.action [i][0], "I2C") == 0)
+			actionWrite.action [i][1] = char_hex_to_int(buf);
+		else
+			actionWrite.action [i][1] = parseValue(buf);
 
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "STATUS");
 		buf = Status -> valuestring;

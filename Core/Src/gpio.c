@@ -120,6 +120,10 @@ GPIO_TypeDef *port_selection (char *text)
 		__HAL_RCC_GPIOF_CLK_ENABLE();
 		return GPIOF;
 	}
+	else if (strcmp(text, "I2C") == 0)
+	{
+		return "I2C";
+	}
 	else if (strcmp(text, "0") == 0)
 		return 0;
 }
