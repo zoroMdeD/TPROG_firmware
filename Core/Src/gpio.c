@@ -127,4 +127,7 @@ GPIO_TypeDef *port_selection (char *text)
 	else if (strcmp(text, "0") == 0)
 		return 0;
 }
+
+
+
 /* USER CODE END 2 */

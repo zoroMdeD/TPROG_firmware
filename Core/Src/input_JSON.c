@@ -87,7 +87,8 @@ void json_input(char *text)
 		write_memory();
 //	else if (strcmp(cmd, "ERASE") == 0)
 //		erase_memory();
-
+	else if (strcmp(cmd, "DEINIT") == 0)
+		deinit_all();
 	cJSON_Delete(json);
 	free(CMD);
 }

@@ -25,7 +25,8 @@ uint16_t addr_port2_num = 0;
 // кол-во aдресных пинов
 uint8_t  addr_quantity_pins = 0;
 
-extern TIM_HandleTypeDef htim1;
+extern I2C_HandleTypeDef hi2c1;
+//extern TIM_HandleTypeDef htim1;
 
 // структура для конфигурации выводов
 extern GPIO_InitTypeDef GPIO_InitStruct;
@@ -54,7 +55,6 @@ void read_all_memory()
 	// если чтение не связано с I2C
 	if (strcmp(actionRead.action [0][0], "I2C") != 0)
 	{
-		uint16_t number = 0;                      // номер бита, с которого начинается отсчет второго порта адреса
 		gpio_init(data_Port, data_Pins, 0);       // инициализация выводов как вход
 
 		// вычисление максимального значения адреса
@@ -235,3 +235,22 @@ void addr_calculation ()
 		addr_port2_num = k;
 	}
 }
+
+/******************************************************************************************************/
+// Функция деинициализации всей перифирии
+void deinit_all ()
+{
+	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|
+			               GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10);
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_All);
+	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|
+			               GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13);
+	HAL_GPIO_DeInit(GPIOD, GPIO_PIN_All);
+	HAL_GPIO_DeInit(GPIOE, GPIO_PIN_All);
+	HAL_GPIO_DeInit(GPIOF, GPIO_PIN_All);
+	HAL_GPIO_DeInit(GPIOG, GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|
+			               GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
+	HAL_I2C_DeInit(&hi2c1);
+}
+
+

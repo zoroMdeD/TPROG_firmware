@@ -16,5 +16,5 @@ void erase_memory();
 void data_init_out();
 void data_init_in();
 void addr_calculation();
-
+void deinit_all ();
 #endif /* INC_COMMAND_H_ */
