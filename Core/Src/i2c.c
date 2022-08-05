@@ -19,9 +19,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "i2c.h"
-
+#include <string.h>
 /* USER CODE BEGIN 0 */
-
+extern uint64_t memory;
 /* USER CODE END 0 */
 
 I2C_HandleTypeDef hi2c1;
@@ -112,32 +112,56 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
 }
 
 /* USER CODE BEGIN 1 */
+/******************************************************************************************************/
 // Ф-ция отправляет по I2C шине заданные данные на заданный адрес
-HAL_StatusTypeDef I2C_send(uint8_t addr, uint32_t data)
+HAL_StatusTypeDef I2C_send(uint8_t addr, uint32_t addr_reg, uint8_t data)
 {
 	HAL_StatusTypeDef status;
-	uint16_t Addr = (addr << 1) + 1;
-	// проверить, нормально ли будет работать запись в определенный регистр (указывать в дата первм элементом адрес регистра)
-	status = HAL_I2C_Master_Transmit(&hi2c1, Addr, &data, 4, HAL_MAX_DELAY);   // HAL_MAX_Delay уменьшить скорее всего придется
+	uint32_t Addr = (addr << 1) + 1;
+	uint32_t rep = memory / 8;
+
+	uint8_t data_out [16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+	for (uint16_t i = 0; i < rep; i+=16)
+	{
+		status = HAL_I2C_Mem_Write(&hi2c1, Addr, i, 1, &data_out, 16, HAL_MAX_DELAY);
+		HAL_Delay(1);
+	}
 	return status;
 }
 
 
-// возможно data через указатель должна идти
-// писать в глобальную переменную???
+/******************************************************************************************************/
+// Функция чтения по I2C
 HAL_StatusTypeDef I2C_receive(uint8_t addr, uint32_t addr_reg, uint32_t size)
 {
-	uint8_t data[10] = {0,};   // динамически определять объем в зависимости от size??
+	uint8_t data[16] = {0,};
 	HAL_StatusTypeDef status;
 	uint16_t Addr = addr << 1;
-	// есть вопросы по тому, сколько считывать и как
-	if (addr_reg > 0)
-		status = HAL_I2C_Mem_Read(&hi2c1, Addr, addr_reg, 1, &data, size, HAL_MAX_DELAY);
-	else
-		status = HAL_I2C_Master_Receive(&hi2c1, Addr, &data, size, HAL_MAX_DELAY);
+	uint32_t rep = memory / 8;
 
-	// отправлять все считанное сразу по USB на комп?
+	for (uint16_t i = 0; i < rep; i+=16)
+	{
+		status = HAL_I2C_Mem_Read(&hi2c1, Addr, i, 1, &data, 16, HAL_MAX_DELAY);
+		HAL_Delay(1);
+	}
 	return status;
 }
 
+
+/******************************************************************************************************/
+// Функция пинает все возможные адреса и уходит в задежку на 10 мс, если адрес доступен для общения
+// может быть переделать, чтобы возвращала все доступные адреса
+void I2C_scan()
+{
+	HAL_StatusTypeDef stat;
+	for(uint16_t i = 0; i < 256; i++)
+	{
+		// проверяем, готово ли устройство по адресу i для связи
+		stat = HAL_I2C_IsDeviceReady(&hi2c1, i, 1, HAL_MAX_DELAY);
+		// если да, то
+		if(stat == HAL_OK)
+			HAL_Delay(10);
+	}
+}
 /* USER CODE END 1 */

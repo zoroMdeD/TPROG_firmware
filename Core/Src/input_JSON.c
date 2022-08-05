@@ -200,6 +200,7 @@ void info_analysis(char *text)
 void parseControlRead (char *text)
 {
 	cJSON *json = cJSON_Parse(text);
+
 	// Нужно каждый цикл менять последнюю цифру в слове Action
 	char act[9] = {'A','c','t','i','o','n','0'};
 
@@ -227,8 +228,8 @@ void parseControlRead (char *text)
 
 		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "NUMBER");
 		buf = Number -> valuestring;
-//		actionRead.action [i][1] = parseValue(buf);
 
+		// если действие это работа с шиной I2C или SPI, то значение строки в виде 0xFF, а если вывод, то [0,0,1....]
 		if (strcmp(actionRead.action [i][0], "I2C") == 0)
 			actionRead.action [i][1] = char_hex_to_int(buf);
 		else
@@ -237,12 +238,16 @@ void parseControlRead (char *text)
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
 		buf = Status -> valuestring;
 
-		// Обработка строки со словом LOW или HIGH в цифровое значение (0 или 1)
-		if (strcmp(buf, "Low") == 0)        actionRead.action [i][2] = 0;
-		else if (strcmp(buf, "High") == 0)  actionRead.action [i][2] = 1;
-		else if (strcmp(buf, "Read") == 0)  actionRead.action [i][2] = "Read";   // = buf и вариации не получается пока сделать, подумать еще
-		// если сюда записаны данные о длине чтения по I2C шине
-		actionRead.action [i][2] = *buf - 48;
+		// если статус связан с шиной I2C или SPI, то значение обрабатывается как 0xFF
+		if (strcmp(actionRead.action [i][0], "I2C") == 0)
+			actionRead.action [i][2] =  char_hex_to_int(buf);
+		else
+		{
+			// Обработка строки со словом LOW или HIGH в цифровое значение (0 или 1)
+			if (strcmp(buf, "Low") == 0)        actionRead.action [i][2] = 0;
+			else if (strcmp(buf, "High") == 0)  actionRead.action [i][2] = 1;
+			else if (strcmp(buf, "Read") == 0)  actionRead.action [i][2] = "Read";   // = buf и вариации не получается пока сделать, подумать еще
+		}
 	}
 	cJSON_Delete(json);
 	free(Port);
@@ -277,19 +282,24 @@ void parseControlWrite (char *text)
 		Number = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "NUMBER");
 		buf = Number -> valuestring;
 
+
 		if (strcmp(actionWrite.action [i][0], "I2C") == 0)
 			actionWrite.action [i][1] = char_hex_to_int(buf);
 		else
 			actionWrite.action [i][1] = parseValue(buf);
 
-		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "STATUS");
-		buf = Status -> valuestring;
-
 		Status = cJSON_GetObjectItem(cJSON_GetObjectItem(json, (const char*)act), "STATUS");
 		buf = Status -> valuestring;
-		if (strcmp(buf, "Low") == 0)          actionWrite.action [i][2] = 0;
-		else if (strcmp(buf, "High") == 0)    actionWrite.action [i][2] = 1;
-		else if (strcmp(buf, "Write") == 0)   actionWrite.action [i][2] = "Write";
+
+		// если статус связан с шиной I2C или SPI, то значение обрабатывается как 0xFF
+		if (strcmp(actionWrite.action [i][0], "I2C") == 0)
+			actionWrite.action [i][2] =  char_hex_to_int(buf);
+		else
+		{
+			if (strcmp(buf, "Low") == 0)          actionWrite.action [i][2] = 0;
+			else if (strcmp(buf, "High") == 0)    actionWrite.action [i][2] = 1;
+			else if (strcmp(buf, "Write") == 0)   actionWrite.action [i][2] = "Write";
+		}
 	}
 	cJSON_Delete(json);
 	free(Port);

@@ -192,7 +192,7 @@ void write_memory(uint32_t data)
 	// выполнение всех действий из структуры actionWrite
 	for (uint8_t j = 0; j < write_num_action; j++)
 	{
-		I2C_send(addr_I2C, actionWrite.action [j][1]);
+		I2C_send(addr_I2C, actionWrite.action [j][1], actionWrite.action [j][2]);
 	}
 }
 
@@ -242,7 +242,8 @@ void deinit_all ()
 {
 	HAL_GPIO_DeInit(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|
 			               GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10);
-	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_All);
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|
+                           GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10);
 	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|
 			               GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13);
 	HAL_GPIO_DeInit(GPIOD, GPIO_PIN_All);
