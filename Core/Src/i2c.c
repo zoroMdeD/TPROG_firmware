@@ -124,8 +124,7 @@ HAL_StatusTypeDef I2C_send(uint8_t addr, uint32_t addr_reg, uint8_t data)
 
 	for (uint16_t i = 0; i < rep; i+=16)
 	{
-		status = HAL_I2C_Mem_Write(&hi2c1, Addr, i, 1, &data_out, 16, HAL_MAX_DELAY);
-		HAL_Delay(1);
+		status = HAL_I2C_Mem_Write(&hi2c1, Addr, i, 1, data_out, 16, HAL_MAX_DELAY);
 	}
 	return status;
 }
@@ -142,7 +141,7 @@ HAL_StatusTypeDef I2C_receive(uint8_t addr, uint32_t addr_reg, uint32_t size)
 
 	for (uint16_t i = 0; i < rep; i+=16)
 	{
-		status = HAL_I2C_Mem_Read(&hi2c1, Addr, i, 1, &data, 16, HAL_MAX_DELAY);
+		status = HAL_I2C_Mem_Read(&hi2c1, Addr, i, 1, data, 16, HAL_MAX_DELAY);
 		HAL_Delay(1);
 	}
 	return status;

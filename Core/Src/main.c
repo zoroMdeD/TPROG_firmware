@@ -111,25 +111,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-// 24LC04B-ISN
-	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x50\"}");
-	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"1\",\"WRITE\":\"1\",\"ERASE\":\"1\"}");
-	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xEE\"}}");
-	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xFFF\"}}");
 
-	json_input("{\"CMD\":\"WRITE\"}");
-	json_input("{\"CMD\":\"READ\"}");
-	HAL_Delay(10000);
-//	json_input("");
-//  test I2C
-//	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x68\"}");
-//	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFF\",\"READ\":\"1\",\"WRITE\":\"1\",\"ERASE\":\"2\"}");
-//
-//	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x23\",\"STATUS\":\"0xAA\"}}");
-//	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x23\",\"STATUS\":\"2\"}}");
+
+//  24LC04B-ISN
+//	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x50\"}");
+//	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"1\",\"WRITE\":\"1\",\"ERASE\":\"1\"}");
+//	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xEE\"}}");
+//	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xFFF\"}}");
 //
 //	json_input("{\"CMD\":\"WRITE\"}");
 //	json_input("{\"CMD\":\"READ\"}");
+//	HAL_Delay(10000);
 
 
 //  CY62128
@@ -151,9 +143,9 @@ int main(void)
 //	json_input("{\"CMD\":\"READ\"}");
 
 //	HAL_Delay(1);
-	  /*
+
 	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)
-	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
+/*	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
 	{
 		CDC_Transmit_FS(json_com, 1024);                  // отправка обратно по юсб текста команды
 		HAL_Delay(100);
