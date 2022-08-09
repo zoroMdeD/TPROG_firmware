@@ -189,10 +189,13 @@ void write_memory(uint32_t data)
 			}
 		}
 	}
-	// выполнение всех действий из структуры actionWrite
-	for (uint8_t j = 0; j < write_num_action; j++)
+	else
 	{
-		I2C_send(addr_I2C, actionWrite.action [j][1], actionWrite.action [j][2]);
+		// выполнение всех действий из структуры actionWrite
+		for (uint8_t j = 0; j < write_num_action; j++)
+		{
+			I2C_send(addr_I2C, actionWrite.action [j][1], actionWrite.action [j][2]);
+		}
 	}
 }
 

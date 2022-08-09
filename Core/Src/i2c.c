@@ -19,7 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "i2c.h"
-#include <string.h>
+
 /* USER CODE BEGIN 0 */
 extern uint64_t memory;
 /* USER CODE END 0 */
