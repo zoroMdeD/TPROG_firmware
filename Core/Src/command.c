@@ -119,12 +119,13 @@ void read_memory()
 
 	// проверка, правильное ли значение считывается, потом удалить
 	// ранее указал, что записываться будет АА. Если все верно считывается, то горит зеленый светодиод
-	if (data == 0xFF)
+	// если считывается FF (FFFF), то горит желтый (значит чтение работает, а запись нет)
+	if ((data == 0xFF)||(data == 0xFFFF))
 	{
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_1, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_0 | GPIO_PIN_2, GPIO_PIN_RESET);
 	}
-	else if (data == 0xAA)
+	else if ((data == 0xAA)||(data == 0xAAAA))
 	{
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_2, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_RESET);
@@ -156,15 +157,17 @@ void write_memory(uint32_t data)
 			HAL_GPIO_WritePin(addr_Port1, addr_Pins1, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(addr_Port2, addr_Pins2, GPIO_PIN_RESET);
 
-			// выставление адреса на пинах
-			HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);    // выставление адреса на первом порту
-			if (i > 0xFFFF)
-			{
-				// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
-				uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
-				// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
-				HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
-			}
+
+			// пробую выставлять адрес перед записью, так как через адрес могут задаваться команды!!!
+//			// выставление адреса на пинах
+//			HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);    // выставление адреса на первом порту
+//			if (i > 0xFFFF)
+//			{
+//				// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
+//				uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
+//				// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
+//				HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
+//			}
 
 			// выполнение всех действий из массивов
 			for (uint8_t j = 0; j < write_num_action; j++)
@@ -179,9 +182,17 @@ void write_memory(uint32_t data)
 				// если действие это запись
 				if (strcmp(actionWrite.action[j][2], "Write") == 0)
 				{
-					// чтобы данные не повторялись
-	//				if (data_write == 0x55) data_write = 0xAA;
-	//				else data_write = 0x55;
+					// выставление адреса на пинах (перенесено из пункта выше!)
+					HAL_GPIO_WritePin(addr_Port1, i & 0xFFFF, GPIO_PIN_SET);    // выставление адреса на первом порту
+					if (i > 0xFFFF)
+					{
+						// выставление адреса на втором порте (тут сложнее, так как выводы могут быть не с 0)
+						uint32_t hi_i = (i >> 16) & 0xFFFF;                     // hi_i это биты адреса для второго порта
+						// сдвиг значения сост выводов пинов к пину, с которого начинается отсчет (на втором порте адрес выставляется не с 0 бита)
+						HAL_GPIO_WritePin(addr_Port2, (hi_i << addr_port2_num) & 0xFFFF, GPIO_PIN_SET);
+					}
+
+					// нет ли тут логической ошибки?
 					HAL_GPIO_WritePin((GPIO_TypeDef*)data_Port, data_Pins, GPIO_PIN_RESET);    // обнуление всех выводов
 					HAL_GPIO_WritePin((GPIO_TypeDef*)data_Port, data_write, GPIO_PIN_SET);	   // установка данных на пины
 					delay_us(value_delay);                          // задержка
