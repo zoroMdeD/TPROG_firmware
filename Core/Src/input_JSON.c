@@ -272,7 +272,7 @@ void parseControlWrite (char *text)
 		if (i < 9)	act[6] = i + '1';
 		else
 		{
-			act[6] = (i + 1) / 10 + '0'; act[7] = (i + 1) - 10 + '0'; act[8] = 0;
+			act[6] = (i + 1) / 10 + '0'; act[7] = (i + 1) % 10 + '0'; act[8] = 0;
 		}
 
 		Port = cJSON_GetObjectItem(cJSON_GetObjectItem(json, act), "PORT");

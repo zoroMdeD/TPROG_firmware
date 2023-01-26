@@ -107,9 +107,9 @@ int main(void)
 //  MX_I2C1_Init();
 //  MX_SPI1_Init();
 //  MX_TIM1_Init();
-//  MX_TIM2_Init();
   MX_USB_DEVICE_Init();
-  MX_SPI2_Init();
+//  MX_TIM2_Init();
+//  MX_SPI2_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init();
@@ -135,7 +135,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
 //  24LC04B-ISN
 //	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x50\"}");
 //	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"1\",\"WRITE\":\"1\",\"ERASE\":\"1\"}");
@@ -144,7 +143,6 @@ int main(void)
 //
 //	json_input("{\"CMD\":\"WRITE\"}");
 //	json_input("{\"CMD\":\"READ\"}");
-//	HAL_Delay(10000);
 
 
 //  CY62128
@@ -158,7 +156,6 @@ int main(void)
 //
 //	json_input("{\"CMD\":\"WRITE\"}");
 //	json_input("{\"CMD\":\"READ\"}");
-//	HAL_Delay(10000);
 
 
 //  CY62157
@@ -172,7 +169,6 @@ int main(void)
 //
 //	json_input("{\"CMD\":\"WRITE\"}");
 //	json_input("{\"CMD\":\"READ\"}");
-//	HAL_Delay(10000);
 
 
 //  FM28V020-SGx
@@ -188,17 +184,21 @@ int main(void)
 //	json_input("{\"CMD\":\"READ\"}");
 
 
-//  AT49BV162
-	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTB\",\"PINS1\":\"[0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0]\"}");
+//  IS61LV25616AL
+	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTE\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTD\",\"PINS2\":\"[0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0]\"}");
 	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\"}");
-	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTE\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTA\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
+	json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTD\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1]\"}");
 
-	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFF\",\"READ\":\"6\",\"WRITE\":\"25\",\"ERASE\":\"0\"}");
-	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"},\"Action6\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"High\"}}");
-	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0]\",\"STATUS\":\"High\"},\"Action3\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0]\",\"STATUS\":\"High\"},\"Action5\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action6\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action8\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action9\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[0,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0]\",\"STATUS\":\"High\"},\"Action10\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1]\",\"STATUS\":\"High\"},\"Action11\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action12\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"High\"},\"Action13\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action14\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action15\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1]\",\"STATUS\":\"High\"},\"Action16\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0]\",\"STATUS\":\"High\"},\"Action17\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action18\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"High\"},\"Action19\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action20\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action21\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action22\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action23\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0]\",\"STATUS\":\"High\"},\"Action24\":{\"PORT\":\"PORTE\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"},\"Action25\":{\"PORT\":\"PORTF\",\"NUMBER\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"STATUS\":\"Low\"}}");
+	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0x7FFFF\",\"READ\":\"3\",\"WRITE\":\"5\",\"ERASE\":\"0\",\"DELAY\":\"1\"}");
+	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1]\",\"STATUS\":\"Low\"},\"Action2\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action3\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"}}");
+	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1]\",\"STATUS\":\"Low\"},\"Action2\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action3\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action4\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action5\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"}}");
 
 	json_input("{\"CMD\":\"WRITE\"}");
 	json_input("{\"CMD\":\"READ\"}");
+
+
+
+	HAL_Delay(10000);
 //	json_input("");
 
 
