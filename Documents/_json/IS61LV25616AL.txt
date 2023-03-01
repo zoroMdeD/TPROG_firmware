@@ -1,0 +1,111 @@
+  Инициализация GPIO (дата, адрес и контрол)
+{
+	"CMD":"GPIO",
+	"FUNC":"CONTROL",
+	"PORT1":"PORTD", 
+	"PINS1":"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1]"
+}
+
+{"CMD":"GPIO","FUNC":"ADDR","PORT1":"PORTE","PINS1":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]","PORT2":"PORTD","PINS2":"[0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0]"}
+{"CMD":"GPIO","FUNC":"DATA","PORT1":"PORTF","PINS1":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]"}
+{"CMD":"GPIO","FUNC":"CONTROL","PORT1":"PORTD","PINS1":"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1]"}
+
+{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTE\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTD\",\"PINS2\":\"[0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0]\"}
+{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\"}
+{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTD\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1]\"}
+
+
+  Объем памяти
+
+{
+	"CMD":"INFO",
+	"MEMORY":"0x7FFFF",
+	"READ":"3",
+	"WRITE":"5",
+	"ERASE":"0",
+	"DELAY":"1"      // в микросекундах
+}
+
+{"CMD":"INFO","MEMORY":"0x7FFFF","READ":"3","WRITE":"5","ERASE":"0","DELAY":"1"}
+
+{\"CMD\":\"INFO\",\"MEMORY\":\"0x7FFFF\",\"READ\":\"3\",\"WRITE\":\"5\",\"ERASE\":\"0\",\"DELAY\":\"1\"}
+
+
+  Запись алгоритма действий при командах 
+
+{
+	"CMD":"READ_ACTION",
+	"Action1":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1]",
+	    "STATUS":"Low"
+	  },
+	"Action2":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]",
+	    "STATUS":"High"
+	  },
+	"Action3":
+	  {
+	    "PORT":"0",
+	    "NUMBER":"0",
+	    "STATUS":"Read"
+	  }
+}
+
+{
+	"CMD":"WRITE_ACTION",
+	"Action1":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1]",
+	    "STATUS":"Low"
+	  },
+	"Action2":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]",
+	    "STATUS":"High"
+	  },
+	"Action3":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]",
+	    "STATUS":"Low"
+	  },
+	"Action4":
+	  {
+	    "PORT":"0",
+	    "NUMBER":"0",
+	    "STATUS":"Write"
+	  },
+	"Action5":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]",
+	    "STATUS":"High"
+	  }
+}
+
+{"CMD":"READ_ACTION","Action1":{"PORT":"PORTD","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1]","STATUS":"Low"},"Action2":{"PORT":"PORTD","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action3":{"PORT":"0","NUMBER":"0","STATUS":"Read"}}
+{"CMD":"WRITE_ACTION","Action1":{"PORT":"PORTD","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1]","STATUS":"Low"},"Action2":{"PORT":"PORTD","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action3":{"PORT":"PORTD","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"Low"},"Action4":{"PORT":"0","NUMBER":"0","STATUS":"Write"},"Action5":{"PORT":"PORTD","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"}}  
+
+{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1]\",\"STATUS\":\"Low\"},\"Action2\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action3\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"}}
+{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1]\",\"STATUS\":\"Low\"},\"Action2\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action3\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action4\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action5\":{\"PORT\":\"PORTD\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"}}  
+
+
+  Команды
+{
+	"CMD":"READ"                   // WRITE, ERASE
+}
+
+{\"CMD\":\"READ\"}
+{\"CMD\":\"WRITE\"}
+{\"CMD\":\"ERASE\"}
+
+{"CMD":"READ"}
+{"CMD":"WRITE"}
+{"CMD":"ERASE"}
+

@@ -1,0 +1,54 @@
+
+  Инициализация GPIO (дата, адрес и контрол)
+{
+	"CMD":"GPIO",
+	"FUNC":"ADDR",                           // DATA, CONTROL
+	"PORT":"PORTC",
+	"PINS":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]" 
+}
+
+  Объем памяти
+
+{
+	"CMD":"INFO",
+	"MEMORY":"0xFFFF",
+	"READ":"5",
+	"WRITE":"5",
+	"ERASE":"2"
+}
+
+  Запись алгоритма действий при командах 
+
+{
+	"CMD":"READ_ACTION",              // WRITE_ACTION, ERASE_ACTION
+	"Action1":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]"
+	    "STATUS":"High"
+	  },
+	"Action2":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]"
+	    "STATUS":"High"
+	  },
+	"Action3":"Read",
+	"Action4":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]"
+	    "STATUS":"Low"
+	  },
+	"Action5":
+	  {
+	    "PORT":"PORTD",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]"
+	    "STATUS":"Low"
+	  }  
+}
+
+  Команды
+{
+	"CMD":"READ"                   // WRITE, ERASE
+}

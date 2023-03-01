@@ -1,0 +1,71 @@
+
+  Инициализация GPIO (дата, адрес и контрол)
+{
+	"CMD":"GPIO",
+	"FUNC":"ADDR",                           // DATA, CONTROL
+	"PORT":"PORTC",
+	"PINS":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]" 
+}
+
+
+  Инициализация I2C
+{
+	"CMD":"I2C",
+	"ADDR_I2C":"0x50"
+}
+
+{"CMD":"I2C","ADDR_I2C":"0x50"}
+{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x50\"}
+
+
+  Объем памяти
+{
+	"CMD":"INFO",
+	"MEMORY":"0xFFF",     в битах? 
+	"READ":"1",
+	"WRITE":"1",
+	"ERASE":"1"
+}
+
+{"CMD":"INFO","MEMORY":"0xFFF","READ":"1","WRITE":"1","ERASE":"1"}
+{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"1\",\"WRITE\":\"1\",\"ERASE\":\"1\"}
+
+
+  Запись алгоритма действий при командах с I2C
+{
+	"CMD":"WRITE_ACTION",
+	"Action1":
+	  {
+	    "PORT":"I2C",
+	    "NUMBER":"0x0",
+            "STATUS":"0xFFF"
+	  }
+}
+{
+	"CMD":"READ_ACTION",
+	"Action1":
+	  {
+	    "PORT":"I2C",
+	    "NUMBER":"0x0",	 // адрес регистра
+            "STATUS":"0x9"     // размер считывания (пока до 9 (байт))
+	  }
+}
+
+{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xFFF\"}}
+{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xFFF\"}}
+
+
+
+  Команды
+{
+	"CMD":"READ"                   // WRITE, ERASE, DEINIT
+}
+
+
+	json_input("{\"CMD\":\"I2C\",\"ADDR_I2C\":\"0x50\"}");
+	json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"1\",\"WRITE\":\"1\",\"ERASE\":\"1\"}");
+	json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xEE\"}}");
+	json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"I2C\",\"NUMBER\":\"0x0\",\"STATUS\":\"0xFFF\"}}");
+
+	json_input("{\"CMD\":\"WRITE\"}");
+	json_input("{\"CMD\":\"READ\"}");

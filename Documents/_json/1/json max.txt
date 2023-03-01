@@ -1,0 +1,19 @@
+"{
+"INSTRUCTION":"SET_PERIPHERALS",
+"COMMAND":
+	{
+	"TYPE":"OCD",
+	"SET":"
+		[
+		0,
+		1,
+		0,
+		1,
+		0,
+		1,
+		1,
+		1
+		]
+	"},
+"TIME":"1122334455"
+}"

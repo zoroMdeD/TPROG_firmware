@@ -1,0 +1,188 @@
+
+  Инициализация GPIO (дата, адрес и контрол)
+{
+	"CMD":"GPIO",
+	"FUNC":"ADDR",                           // DATA, CONTROL,    PWM (пока не юзаю)
+	"PORT1":"PORTC", 
+	"PINS1":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]", 
+	"PORT2":"PORTC",
+	"PINS2":"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]" 
+}
+
+{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTC\",\"PINS2\":\"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]\"}      addr
+{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTA\",\"PINS1\":\"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]\"}                                                                          data
+{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTC\",\"PINS1\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}                                                                       control
+
+{"CMD":"GPIO","FUNC":"ADDR","PORT1":"PORTF","PINS1":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]","PORT2":"PORTC","PINS2":"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]"}      addr
+{"CMD":"GPIO","FUNC":"DATA","PORT1":"PORTA","PINS1":"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]"}                                                                  data
+{"CMD":"GPIO","FUNC":"CONTROL","PORT1":"PORTC","PINS1":"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]"}                                                               control
+
+
+  Объем памяти
+
+{
+	"CMD":"INFO",
+	"MEMORY":"0xFFFFF",
+	"READ":"8",
+	"WRITE":"8",
+	"ERASE":"8",
+	"DELAY":"1"      // в микросекундах
+}
+
+{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFFFF\",\"READ\":\"8\",\"WRITE\":\"8\",\"ERASE\":\"8\",\"DELAY\":\"1\"}
+{"CMD":"INFO","MEMORY":"0xFFFFF","READ":"8","WRITE":"8","ERASE":"8","DELAY":"1"}
+
+
+  Запись алгоритма действий при командах 
+
+{
+	"CMD":"READ_ACTION",
+	"Action1":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]",
+	    "STATUS":"High"
+	  },
+	"Action2":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]",
+	    "STATUS":"Low"
+	  },
+	"Action3":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]",
+	    "STATUS":"High"
+	  },
+	"Action4":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]",
+	    "STATUS":"Low"
+	  },
+	"Action5":
+	  {
+	    "PORT":"0",
+	    "NUMBER":"0",
+	    "STATUS":"Read"
+          },
+	"Action6":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]",
+	    "STATUS":"High"
+	  },
+	"Action7":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]",
+	    "STATUS":"High"
+	  },
+	"Action8":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]",
+	    "STATUS":"Low"
+	  } 
+}
+
+{
+	"CMD":"WRITE_ACTION",
+	"Action1":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]",
+	    "STATUS":"High"
+	  },
+	"Action2":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]",
+	    "STATUS":"Low"
+	  },
+	"Action3":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]",
+	    "STATUS":"High"
+	  },
+	"Action4":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]",
+	    "STATUS":"Low"
+	  },
+	"Action5":
+	  {
+	    "PORT":"0",
+	    "NUMBER":"0",
+	    "STATUS":"Write"
+          },
+	"Action6":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]",
+	    "STATUS":"High"
+	  },
+	"Action7":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]",
+	    "STATUS":"High"
+	  },
+	"Action8":
+	  {
+	    "PORT":"PORTC",
+	    "NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]",
+	    "STATUS":"Low"
+	  } 
+}
+
+{"CMD":"READ_ACTION","Action1":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"High"},"Action2":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"Low"},"Action3":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action4":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"Low"},"Action5":{"PORT":"0","NUMBER":"0","STATUS":"Read"},"Action6":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action7":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"High"},"Action8":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"Low"}}
+{"CMD":"WRITE_ACTION","Action1":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action2":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"Low"},"Action3":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action4":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"Low"},"Action5":{"PORT":"0","NUMBER":"0","STATUS":"Write"},"Action6":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"High"},"Action7":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"High"},"Action8":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"Low"}}
+
+{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}
+{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"High\"},\"Action4\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"Low\"},\"Action5\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action6\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]\",\"STATUS\":\"High\"},\"Action7\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action8\":{\"PORT\":\"PORTC\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]\",\"STATUS\":\"Low\"}}
+
+
+  Команды
+{
+	"CMD":"READ"                   // WRITE, ERASE
+}
+
+{\"CMD\":\"READ\"}
+{\"CMD\":\"WRITE\"}
+{\"CMD\":\"ERASE\"}
+
+{"CMD":"READ"}
+{"CMD":"WRITE"}
+{"CMD":"ERASE"}
+
+Отправлял 11.05.22
+
+{"CMD":"GPIO","FUNC":"ADDR","PORT1":"PORTF","PINS1":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]","PORT2":"PORTC","PINS2":"[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]"}
+{"CMD":"GPIO","FUNC":"DATA","PORT1":"PORTA","PINS1":"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]"}
+{"CMD":"GPIO","FUNC":"CONTROL","PORT1":"PORTC","PINS1":"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]"}
+{"CMD":"INFO","MEMORY":"0xFFFFF","READ":"8","WRITE":"8","ERASE":"1","DELAY":"1"}
+{"CMD":"READ_ACTION","Action1":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"High"},"Action2":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"Low"},"Action3":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action4":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"Low"},"Action5":"Read","Action6":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action7":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"High"},"Action8":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"Low"}}
+{"CMD":"WRITE_ACTION","Action1":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action2":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"Low"},"Action3":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action4":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"Low"},"Action5":"Write","Action6":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"High"},"Action7":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"High"},"Action8":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"Low"}}
+{"CMD":"ERASE_ACTION","Action1":"Erase"}
+{"CMD":"WRITE"}
+{"CMD":"READ"}
+{"CMD":"ERASE"}
+{"CMD":"READ"}
+
+
+Отправлял 28.04.22
+{"CMD":"GPIO","FUNC":"ADDR","PORT":"PORTF","PINS":"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]"}
+{"CMD":"GPIO","FUNC":"DATA","PORT":"PORTA","PINS":"[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]"}
+{"CMD":"GPIO","FUNC":"CONTROL","PORT":"PORTC","PINS":"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]"}
+{"CMD":"INFO","MEMORY":"0xFF","READ":"8","WRITE":"8","ERASE":"8"}
+{"CMD":"READ_ACTION","Action1":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"High"},"Action2":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"Low"},"Action3":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action4":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"Low"},"Action5":"Read","Action6":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action7":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"High"},"Action8":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"Low"}}
+{"CMD":"WRITE_ACTION","Action1":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]","STATUS":"High"},"Action2":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"Low"},"Action3":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"High"},"Action4":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"Low"},"Action5":"Write","Action6":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]","STATUS":"High"},"Action7":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]","STATUS":"High"},"Action8":{"PORT":"PORTC","NUMBER":"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]","STATUS":"Low"}}
+{"CMD":"WRITE"}
+{"CMD":"READ"}
+
+
+

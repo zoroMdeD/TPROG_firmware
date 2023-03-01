@@ -1,0 +1,21 @@
+{
+  "Init": 
+  {
+    "GPIO": [
+      "PORT_A",
+      "PORT_B"
+      ],
+    "MODE": [
+      "OUT",
+      "IN"]  
+  }
+
+}
+
+  {"Init":{"GPIO":["PORT_A","PORT_B"],"MODE":["OUT","IN"]}}
+
+{\"GPIO\":\"PORT_C\",\"MODE\":\"OUT\"}
+
+{\"Port\":\"PORT_A\",\"GPIO\":[\"8\",\"9\",\"13\"]} не работает
+
+{"Port":"PORT_A","GPIO":"[8,9,13]"}             {\"Port\":\"PORT_A\",\"GPIO\":\"[8,9,13]\"}

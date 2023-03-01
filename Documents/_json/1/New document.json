@@ -1,0 +1,13 @@
+{
+  "Init": 
+  {
+    "GPIO": [
+      "PORT_A",
+      "PORT_B"
+      ],
+    "MODE": [
+      "OUT",
+      "IN"]  
+  }
+
+}

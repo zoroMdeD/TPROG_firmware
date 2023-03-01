@@ -1,0 +1,63 @@
+  Инициализация выводов
+{
+	"Func":"GPIO_init",                              (варианты: GPIO, GPIO_read, I2C, SPI, GPIO_init, SPI_init, I2C_init),
+	"Port":"PORT_B",                                 (варианты: PORT_A, PORT_B, PORT_C, PORT_D, PORT_E, PORT_F)
+	"D_IN":"[1,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0]",
+	"D_OUT":"1000111111110000"
+}
+
+{"Func":"GPIO_init","Port":"PORT_B","D_IN":"0000000000000000","D_OUT":"0000000011111011"} 
+{\"Func\":\"GPIO_init\",\"Port\":\"PORT_B\",\"D_IN\":\"0000000000000000\",\"D_OUT\":\"0000000011111011\"} 
+
+
+  Вкл\выкл пинов
+{
+	"Func":"GPIO",                              
+	"Port":"PORT_B",      
+	"D_HIGH":"0000000011111011",
+	"D_LOW":"0000000000000000"
+}
+
+{"Func":"GPIO","Port":"PORT_B","D_HIGH":"0000000011111011","D_LOW":"0000000000000000"} 
+{"Func":"GPIO","Port":"PORT_B","D_HIGH":"0000000000000000","D_LOW":"0000000011111011"}                       
+{\"Func\":\"GPIO\",\"Port\":\"PORT_B\",\"D_HIGH\":\"0000000011111011\",\"D_LOW\":\"0000000000000000\"} 
+
+
+  Чтение состояния выводов (порта)
+{
+	"Func":"GPIO_read",
+	"Port":"PORT_B"
+}
+
+{\"Func\":\"GPIO_read\",\"Port\":\"PORT_B\"}
+
+
+  Конфигурация I2C
+{
+	"Func":"I2C_init"
+}
+
+{"Func":"I2C_init"}
+{\"Func\":\"I2C_init\"}
+
+
+  Конфигурация SPI
+{
+	"Func":"SPI_init"
+}
+
+{\"Func\":\"SPI_init\"}
+
+
+  Отправка/чтение I2C
+{
+	"Func":"I2C",
+	"FuncI2C":"Transmit",                     "Receive"
+	"Addr":"1000111",
+	"Data":"1100010"
+}
+
+{\"Func\":\"I2C\",\"FuncI2C\":\"Transmit\",\"Addr\":\"1000111\",\"Data\":\"1100010\"}
+
+
+
