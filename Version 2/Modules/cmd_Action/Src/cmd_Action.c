@@ -1,20 +1,35 @@
 /**
   ******************************************************************************
-  * @file    structures.c	
+  * @file    cmd_Action.c	
   * @brief   
   * @author  nchernov
   * @version 1.0
-  * @date    Dec 4, 2023
+  * @date    Dec 6, 2023
   ******************************************************************************
   * @attention
   ******************************************************************************
   */
 
-#include "structures.h"
+#include "cmd_Action.h"
+
 /*----------------------------------------------------------------------------*/
-global_settings SETTINGS;
-action_settings ACTION[3][30];                             // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
-/*----------------------------------------------------------------------------*/
-uint8_t  maxAction[3] = {0,0,0};                           // the action number that is currently in use
-uint32_t dataTest = 0xAA;
+uint32_t ACTION_CYCLE(uint8_t num)
+{
+	uint32_t data = 0;
+	uint8_t  actionCount = 0;
+
+	if(SETTINGS.addrPins1 > 0)                             // если есть адресация выводов
+	{
+		for(uint32_t addr = 0; addr < SETTINGS.memorySize; addr += SETTINGS.memoryStep)
+		{
+
+		}
+//		HAL_GPIO_WritePin(SETTINGS.addrPort1, GPIO_Pin, PinState)
+	}
+
+
+	return data;
+}
+
+
 /*----------------------------------------------------------------------------*/

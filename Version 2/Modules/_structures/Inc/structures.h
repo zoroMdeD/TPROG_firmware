@@ -20,31 +20,27 @@
  */
 typedef enum
 {
-	GPIO  = 1,/**< GPIO */
-	SPI   = 2,/**< SPI */
-	I2C   = 3,/**< I2C */
-	Timer = 4 /**< Timer */
+	GPIO_IN  = 1,
+	GPIO_OUT = 2,
+	SPI_Rx   = 3,
+	SPI_Tx   = 4,
+	I2C_Rx   = 5,
+	I2C_Tx   = 6,
+	Timer    = 7,
+	Delay    = 8
 } action_type;
 
 /*----------------------------------------------------------------------------*/
 typedef struct
 {
 	uint32_t       memorySize;
-	GPIO_TypeDef  *portAddr1;            // проверить работу указателей!
-	GPIO_TypeDef  *portAddr2;
-	uint16_t       pinsAddr1;
-	uint16_t       pinsAddr2;
-	GPIO_TypeDef  *portInput1;
-	GPIO_TypeDef  *portInput2;
-	uint16_t       pinsInput1;
-	uint16_t       pinsInput2;
-	GPIO_TypeDef  *portOutput1;
-	GPIO_TypeDef  *portOutput2;
-	uint16_t       pinsOutput1;
-	uint16_t       pinsOutput2;
-	GPIO_TypeDef  *portControl;
-	uint16_t       pinsControl;
+	uint8_t        memoryStep;
+	GPIO_TypeDef  *addrPort1;
+	GPIO_TypeDef  *addrPort2;
+	uint16_t       addrPins1;
+	uint16_t       addrPins2;
 } global_settings;
+
 /*----------------------------------------------------------------------------*/
 typedef struct
 {
@@ -52,25 +48,8 @@ typedef struct
 	GPIO_TypeDef  *port;
 	uint16_t       pins;
 	uint16_t       status;
-	uint64_t       data;               // Вот тут подумать надо будет, какого объема посылать данные!!!
-} active_read;
-/*----------------------------------------------------------------------------*/
-typedef struct
-{
-	action_type    type;
-	GPIO_TypeDef  *port;
-	uint16_t       pins;
-	uint16_t       status;
-	uint64_t       data;
-} active_write;
-/*----------------------------------------------------------------------------*/
-typedef struct
-{
-	action_type    type;
-	GPIO_TypeDef  *port;
-	uint16_t       pins;
-	uint16_t       status;
-	uint64_t       data;
-} active_erase;
+	uint16_t       data;
+} action_settings;
+
 
 #endif /* STRUCTURES_INC_STRUCTURES_H_ */

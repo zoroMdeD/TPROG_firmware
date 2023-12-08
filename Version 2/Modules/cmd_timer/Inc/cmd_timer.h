@@ -16,9 +16,11 @@
 #include "structures.h"
 /*----------------------------------------------------------------------------*/
 extern global_settings SETTINGS;
-extern active_read     ACTIVE_READ;
-extern active_write    ACTIVE_WRITE;
-extern active_erase    ACTIVE_ERASE;
+extern action_settings ACTION[3][30];                      // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
+/*----------------------------------------------------------------------------*/
+extern uint8_t  countAction[3];                            // the action number that is currently in use
+extern uint8_t  maxAction[3];                              // max actions value
+extern uint32_t dataTest;
 /*----------------------------------------------------------------------------*/
 void INIT_TIMER(uint8_t number, uint8_t channel, uint32_t freq, uint8_t fill_factor);
 /*----------------------------------------------------------------------------*/

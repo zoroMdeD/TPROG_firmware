@@ -90,24 +90,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
-  MX_SPI1_Init();
-//  MX_TIM1_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-  JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\": 255,\"TYPE\":\"ADDR\"}");
+//  JSON_INPUT("");
 
-  JSON_INPUT("{\"COMMAND\":\"INIT_TIMER\",\"NUMBER\":1,\"CHANNEL\":1,\"FREQ\": 385,\"FILL_FACTOR\":50}");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\": 255,\"STATUS\": 1,\"ACTION\":0}");
-	  HAL_Delay(1000);
-	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\": 255,\"STATUS\": 0,\"ACTION\":0}");
-	  HAL_Delay(1000);
+	  READ_GPIO(GPIOB, 0b111111111000, 0);
+	  HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

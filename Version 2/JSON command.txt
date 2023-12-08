@@ -3,7 +3,7 @@
 "MODE":"OUTPUT",
 "PORT":"PORTC",
 "PINS": 16,
-"TYPE":"ADDR"
+"TYPE":"ADDR1"      // ADDR2, DATA1, DATA2, CONTROL
 }
 
 {\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\": 16,\"TYPE\":\"ADDR\"}
@@ -21,8 +21,8 @@
 {
 "COMMAND":"MODIFIC_GPIO",
 "PORT":"PORTC",
-"PINS": 16,
-"STATUS": 1,
+"PINS":16,
+"STATUS":1,
 "ACTION":0
 }
 
@@ -32,7 +32,7 @@
 {
 "COMMAND":"READ_GPIO",
 "PORT":"PORTC",
-"PINS": 32,
+"PINS":32,
 "ACTION":0
 }
 
@@ -43,3 +43,19 @@
 }
 
 
+----SPI----
+{
+"COMMAND":"INIT_SPI",
+"NUMBER":1
+}
+
+{\"COMMAND\":\"INIT_SPI\",\"NUMBER\":1}
+
+{
+"COMMAND":"SPI_TRANSMIT",
+"NUMBER":1,
+"DATA": 170,
+"ACTION":1
+}
+
+{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\": 170,\"ACTION\":1}

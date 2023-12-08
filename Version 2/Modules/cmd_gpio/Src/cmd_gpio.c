@@ -18,30 +18,27 @@
  * @param port
  * @param mode     gpio mode (input/output)
  * @param GPIO_Pin
- * @param type
  */
-void INIT_GPIO(char *port, char *mode, uint16_t GPIO_Pin, char *type)
+void INIT_GPIO(GPIO_TypeDef *port, char *mode, uint16_t GPIO_Pin, uint8_t type)
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	GPIO_TypeDef *PORT = port_name(port);                  // take port number
 
 	// включить тактирование порта
-	if (PORT == GPIOA)
+	if (port == GPIOA)
 		__HAL_RCC_GPIOA_CLK_ENABLE();
-	else if (PORT == GPIOB)
+	else if (port == GPIOB)
 		__HAL_RCC_GPIOB_CLK_ENABLE();
-	else if (PORT == GPIOC)
+	else if (port == GPIOC)
 		__HAL_RCC_GPIOC_CLK_ENABLE();
-	else if (PORT == GPIOD)
+	else if (port == GPIOD)
 		__HAL_RCC_GPIOD_CLK_ENABLE();
-	else if (PORT == GPIOE)
+	else if (port == GPIOE)
 		__HAL_RCC_GPIOE_CLK_ENABLE();
-	else if (PORT == GPIOF)
+	else if (port == GPIOF)
 		__HAL_RCC_GPIOF_CLK_ENABLE();
 
-	// Init GPIO
-	GPIO_InitStruct.Pin = GPIO_Pin;
-	if(strcmp(mode, "INPUT") == 0)
+	GPIO_InitStruct.Pin = GPIO_Pin;                        	// Init GPIO
+	if(strcmp(mode, "INPUT") == 0)                          // GPIO mode
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	else if(strcmp(mode, "OUTPUT") == 0)
 	{
@@ -49,18 +46,18 @@ void INIT_GPIO(char *port, char *mode, uint16_t GPIO_Pin, char *type)
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	}
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(PORT, &GPIO_InitStruct);
+	HAL_GPIO_Init(port, &GPIO_InitStruct);
 
-	// запись назначения данного порта в глобальную структуру (пока только адрес)
-	if(strcmp(type, "ADDR1") == 0)
+	// work with type
+	if(type == 1)
 	{
-		SETTINGS.portAddr1 = PORT;
-		SETTINGS.pinsAddr1 = GPIO_Pin;
+		SETTINGS.addrPort1 = port;
+		SETTINGS.addrPins1 = GPIO_Pin;
 	}
-	if(strcmp(type, "ADDR2") == 0)
+	else if(type == 2)
 	{
-		SETTINGS.portAddr2 = PORT;
-		SETTINGS.pinsAddr2 = GPIO_Pin;
+		SETTINGS.addrPort2 = port;
+		SETTINGS.addrPins2 = GPIO_Pin;
 	}
 }
 
@@ -71,35 +68,21 @@ void INIT_GPIO(char *port, char *mode, uint16_t GPIO_Pin, char *type)
  * @param port
  * @param GPIO_Pin
  * @param status
+ * @param setAction
  */
-void MODIFIC_GPIO(char *port, uint16_t GPIO_Pin, uint8_t status, uint8_t action)
+void MODIFIC_GPIO(GPIO_TypeDef *port, uint16_t GPIO_Pin, uint8_t status, uint8_t setAction)
 {
-	GPIO_TypeDef *PORT = port_name(port);                  // take port number
-	HAL_GPIO_WritePin(PORT, GPIO_Pin, status);
-	// запись в действия, если требуется
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-uint16_t READ_GPIO(char *port, uint16_t GPIO_Pin, uint8_t action)
-{
-	uint16_t gpioRead = 0;
-	GPIO_TypeDef *PORT = port_name(port);
-	gpioRead = HAL_GPIO_ReadPin(PORT, GPIO_Pin);
-	// отправка данных куда-нибудь
-	return gpioRead;
-}
-
-
-/*----------------------------------------------------------------------------*/
-uint16_t READ_GPIO_ALL(char *port, uint8_t action)
-{
-	uint16_t gpioReadAll = 0;
-	GPIO_TypeDef *PORT = port_name(port);
-	gpioReadAll = PORT->IDR;
-	// отправка данных куда-нибудь
-	return gpioReadAll;
+	if (setAction == 0)                                    // isn't action
+		HAL_GPIO_WritePin(port, GPIO_Pin, status);
+	else                                                   // is action
+	{
+		// пиздец запись конечно, хуй раздуплюсь в понедельник
+		ACTION[setAction][maxAction[setAction]].type = GPIO_OUT;
+		ACTION[setAction][maxAction[setAction]].port = port;
+		ACTION[setAction][maxAction[setAction]].pins = GPIO_Pin;
+		ACTION[setAction][maxAction[setAction]].status = status;
+		maxAction[setAction]++;                            // up the action counter
+	}
 }
 
 
@@ -107,22 +90,25 @@ uint16_t READ_GPIO_ALL(char *port, uint8_t action)
 /**
  * @brief
  * @param port
- * @return a number port
+ * @param GPIO_Pin
+ * @param setAction
+ * @return data
  */
-GPIO_TypeDef *port_name(char *port)
+uint16_t READ_GPIO(GPIO_TypeDef *port, uint16_t GPIO_Pin, uint8_t setAction)
 {
-	GPIO_TypeDef *var = 0;
-	if (strcmp(port, "PORTA") == 0)
-		var = GPIOA;
-	else if (strcmp(port, "PORTB") == 0)
-		var = GPIOB;
-	else if (strcmp(port, "PORTC") == 0)
-		var = GPIOC;
-	else if (strcmp(port, "PORTD") == 0)
-		var = GPIOD;
-	else if (strcmp(port, "PORTE") == 0)
-		var = GPIOE;
-	else if (strcmp(port, "PORTF") == 0)
-		var = GPIOF;
-	return var;
+	uint16_t gpioRead = 0;
+	if (setAction == 0)                                    // isn't action
+	{
+		gpioRead = (port->IDR) & GPIO_Pin;                 // read all ports data
+		gpioRead >>= __builtin_ctz(gpioRead);              // __builtin_ctz the returned quantity is 0 on the right
+	}
+	else                                                   // is action
+	{
+		ACTION[setAction][maxAction[setAction]].type = GPIO_IN;
+		ACTION[setAction][maxAction[setAction]].port = port;
+		ACTION[setAction][maxAction[setAction]].pins = GPIO_Pin;
+		maxAction[setAction]++;                            // up the action counter
+	}
+	// отправка данных куда-нибудь
+	return gpioRead;
 }

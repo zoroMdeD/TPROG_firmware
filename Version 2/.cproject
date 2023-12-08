@@ -54,6 +54,8 @@
 									<listOptionValue builtIn="false" value="../Modules/cmd_gpio/Inc"/>
 									<listOptionValue builtIn="false" value="../Modules/cmd_JSON/Inc"/>
 									<listOptionValue builtIn="false" value="../Modules/cmd_timer/Inc"/>
+									<listOptionValue builtIn="false" value="../Modules/cmd_spi/Inc"/>
+									<listOptionValue builtIn="false" value="../Modules/cmd_Action/Inc"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.989001692" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
