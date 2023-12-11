@@ -16,10 +16,9 @@
 #include "structures.h"
 /*----------------------------------------------------------------------------*/
 extern global_settings SETTINGS;
-extern action_settings ACTION[3][30];                      // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
+extern action_settings ACTION[4][30];                      // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
 /*----------------------------------------------------------------------------*/
-extern uint8_t  countAction[3];                            // the action number that is currently in use
-extern uint8_t  maxAction[3];                              // max actions value
+extern uint8_t  maxAction[4];                              // max actions value
 extern uint32_t dataTest;
 /*----------------------------------------------------------------------------*/
 void INIT_SPI(uint8_t number);

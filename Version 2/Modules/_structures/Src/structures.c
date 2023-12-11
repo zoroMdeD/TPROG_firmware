@@ -13,8 +13,8 @@
 #include "structures.h"
 /*----------------------------------------------------------------------------*/
 global_settings SETTINGS;
-action_settings ACTION[3][30];                             // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
+action_settings ACTION[4][30];                             // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
 /*----------------------------------------------------------------------------*/
-uint8_t  maxAction[3] = {0,0,0};                           // the action number that is currently in use
+uint8_t  maxAction[4] = {0,0,0};                           // the action number that is currently in use
 uint32_t dataTest = 0xAA;
 /*----------------------------------------------------------------------------*/

@@ -16,9 +16,9 @@
 #include "structures.h"
 /*----------------------------------------------------------------------------*/
 extern global_settings SETTINGS;
-extern action_settings ACTION[3][30];                      // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
+extern action_settings ACTION[4][30];                      // array for some actions. 0 is reading actions, 1 is writing actions, 2 i erasing actions
 /*----------------------------------------------------------------------------*/
-extern uint8_t  maxAction[3];                              // the action number that is currently in use
+extern uint8_t  maxAction[4];                              // the action number that is currently in use
 extern uint32_t dataTest;
 /*----------------------------------------------------------------------------*/
 void INIT_GPIO(GPIO_TypeDef *port, char *mode, uint16_t GPIO_Pin, uint8_t type);

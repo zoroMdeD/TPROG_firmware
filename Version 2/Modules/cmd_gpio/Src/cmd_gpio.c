@@ -100,7 +100,7 @@ uint16_t READ_GPIO(GPIO_TypeDef *port, uint16_t GPIO_Pin, uint8_t setAction)
 	if (setAction == 0)                                    // isn't action
 	{
 		gpioRead = (port->IDR) & GPIO_Pin;                 // read all ports data
-		gpioRead >>= __builtin_ctz(gpioRead);              // __builtin_ctz the returned quantity is 0 on the right
+//		gpioRead >>= __builtin_ctz(gpioRead);              // __builtin_ctz the returned quantity is 0 on the right
 	}
 	else                                                   // is action
 	{

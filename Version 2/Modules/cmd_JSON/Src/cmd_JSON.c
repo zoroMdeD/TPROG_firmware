@@ -31,21 +31,21 @@ void JSON_INPUT(char *text)
 	// Choosing the periphery (GPIO)
 	if(strcmp(command, "INIT_GPIO") == 0)
 	{
-		char *mode, *cport, *ctype; uint8_t pins, type;
+		char *mode, *cport, *ctype; uint16_t pins = 0, type = 0;
 		mode  = cJSON_GetObjectItem(json, "MODE") -> valuestring;
 		cport = cJSON_GetObjectItem(json, "PORT") -> valuestring;
 		pins  = cJSON_GetObjectItem(json, "PINS") -> valueint;
 		ctype = cJSON_GetObjectItem(json, "TYPE") -> valuestring;
-		if(strcmp(command, "ADDR1") == 0)
+		if(strcmp(ctype, "ADDR1") == 0)
 			type = 1;
-		else if(strcmp(command, "ADDR2") == 0)
+		else if(strcmp(ctype, "ADDR2") == 0)
 			type = 2;
 		GPIO_TypeDef *port = port_name(cport);
 		INIT_GPIO(port, mode, pins, type);
 	}
 	else if(strcmp(command, "MODIFIC_GPIO") == 0)
 	{
-		char *cport; uint8_t pins, status, action;
+		char *cport; uint8_t pins = 0, status = 0, action = 0;
 		cport  = cJSON_GetObjectItem(json, "PORT") -> valuestring;
 		pins   = cJSON_GetObjectItem(json, "PINS") -> valueint;
 		status = cJSON_GetObjectItem(json, "STATUS") -> valueint;
@@ -55,7 +55,7 @@ void JSON_INPUT(char *text)
 	}
 	else if(strcmp(command, "READ_GPIO") == 0)
 	{
-		char *cport; uint8_t pins, action;
+		char *cport; uint8_t pins = 0, action = 0;
 		uint16_t status = 0;
 		cport  = cJSON_GetObjectItem(json, "PORT") -> valuestring;
 		pins   = cJSON_GetObjectItem(json, "PINS") -> valueint;
@@ -67,7 +67,7 @@ void JSON_INPUT(char *text)
 	// Timer (пока не работает)
 	else if(strcmp(command, "INIT_TIMER") == 0)
 	{
-		uint8_t number, channel, fill_factor; uint32_t freq;
+		uint8_t number = 0, channel = 0, fill_factor = 0; uint32_t freq = 0;
 		number  = cJSON_GetObjectItem(json, "NUMBER") -> valueint;
 		channel = cJSON_GetObjectItem(json, "CHANNEL") -> valueint;
 		freq    = cJSON_GetObjectItem(json, "FREQ") -> valueint;
@@ -82,7 +82,7 @@ void JSON_INPUT(char *text)
 	}
 	else if(strcmp(command, "SPI_TRANSMIT") == 0)
 	{
-		uint8_t number, action, data;
+		uint8_t number = 0, action = 0, data = 0;
 		number = cJSON_GetObjectItem(json, "NUMBER") -> valueint;
 		data   = cJSON_GetObjectItem(json, "DATA") -> valueint;
 		action = cJSON_GetObjectItem(json, "ACTION") -> valueint;
@@ -90,7 +90,7 @@ void JSON_INPUT(char *text)
 	}
 	else if(strcmp(command, "SPI_RECEIVE") == 0)
 	{
-		uint8_t number, action;
+		uint8_t number = 0, action = 0;
 		number = cJSON_GetObjectItem(json, "NUMBER") -> valueint;
 		action = cJSON_GetObjectItem(json, "ACTION") -> valueint;
 		SPI_RECEIVE(number, action);
@@ -99,21 +99,21 @@ void JSON_INPUT(char *text)
 
 
 	// system commands
-	else if(strcmp(command, "READ") == 0)
-	{
-
-	}
 	else if(strcmp(command, "WRITE") == 0)
 	{
-
+		ACTION_CYCLE(1);
+	}
+	else if(strcmp(command, "READ") == 0)
+	{
+		ACTION_CYCLE(2);
 	}
 	else if(strcmp(command, "ERASE") == 0)
 	{
-
+		ACTION_CYCLE(3);
 	}
 	else if(strcmp(command, "DELAY") == 0)
 	{
-		uint8_t action;  uint16_t time;
+		uint8_t action = 0;  uint16_t time = 0;
 		time = cJSON_GetObjectItem(json, "TIME") -> valueint;
 		action = cJSON_GetObjectItem(json, "ACTION") -> valueint;
 //		DELAY(time, action);

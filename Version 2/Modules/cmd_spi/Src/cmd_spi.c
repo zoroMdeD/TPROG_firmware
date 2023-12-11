@@ -61,9 +61,9 @@ void SPI_TRANSMIT(uint8_t number, uint8_t data, uint8_t setAction)
 		HAL_SPI_Transmit(&hspi, &data, sizeof(data), 0xFFF);
 	else
 	{
-		ACTION[setAction][countAction[setAction]].type = SPI_Tx;
-		ACTION[setAction][countAction[setAction]].data = data;
-		countAction[setAction]++;
+		ACTION[setAction][maxAction[setAction]].type = SPI_Tx;
+		ACTION[setAction][maxAction[setAction]].data = data;
+		maxAction[setAction]++;
 	}
 }
 
@@ -88,9 +88,9 @@ uint8_t SPI_RECEIVE(uint8_t number, uint8_t setAction)
 		HAL_SPI_Receive(&hspi, &data, 1, 0xFFF);
 	else
 	{
-		ACTION[setAction][countAction[setAction]].type = SPI_Rx;
-		ACTION[setAction][countAction[setAction]].data = data;
-		countAction[setAction]++;
+		ACTION[setAction][maxAction[setAction]].type = SPI_Rx;
+		ACTION[setAction][maxAction[setAction]].data = data;
+		maxAction[setAction]++;
 	}
 	return data;
 }
