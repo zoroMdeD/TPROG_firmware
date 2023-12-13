@@ -59,6 +59,11 @@ void INIT_GPIO(GPIO_TypeDef *port, char *mode, uint16_t GPIO_Pin, uint8_t type)
 		SETTINGS.addrPort2 = port;
 		SETTINGS.addrPins2 = GPIO_Pin;
 	}
+	else if(type == 3)
+	{
+		SETTINGS.dataPort = port;
+		SETTINGS.dataPins = GPIO_Pin;
+	}
 }
 
 

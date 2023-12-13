@@ -27,7 +27,8 @@ typedef enum
 	I2C_Rx   = 5,
 	I2C_Tx   = 6,
 	Timer    = 7,
-	Delay    = 8
+	Delay    = 8,
+	Data_change = 9
 } action_type;
 
 /*----------------------------------------------------------------------------*/
@@ -39,6 +40,8 @@ typedef struct
 	GPIO_TypeDef  *addrPort2;
 	uint16_t       addrPins1;
 	uint16_t       addrPins2;
+	GPIO_TypeDef  *dataPort;
+	uint16_t       dataPins;
 } global_settings;
 
 /*----------------------------------------------------------------------------*/

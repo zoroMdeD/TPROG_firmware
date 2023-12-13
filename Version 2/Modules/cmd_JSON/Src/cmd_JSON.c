@@ -27,7 +27,7 @@ void JSON_INPUT(char *text)
 	cJSON *json = cJSON_Parse(text);
 	cJSON *CMD  = cJSON_GetObjectItem(json, "COMMAND");
 	command = CMD -> valuestring;
-
+	/*----------------------------------------------------------------------------*/
 	// Choosing the periphery (GPIO)
 	if(strcmp(command, "INIT_GPIO") == 0)
 	{
@@ -40,6 +40,8 @@ void JSON_INPUT(char *text)
 			type = 1;
 		else if(strcmp(ctype, "ADDR2") == 0)
 			type = 2;
+		else if(strcmp(ctype, "DATA") == 0)
+			type = 3;
 		GPIO_TypeDef *port = port_name(cport);
 		INIT_GPIO(port, mode, pins, type);
 	}
@@ -64,6 +66,7 @@ void JSON_INPUT(char *text)
 		status = READ_GPIO(port, pins, action);
 		// отправка данных обратно      добавить тут
 	}
+	/*----------------------------------------------------------------------------*/
 	// Timer (пока не работает)
 	else if(strcmp(command, "INIT_TIMER") == 0)
 	{
@@ -74,6 +77,7 @@ void JSON_INPUT(char *text)
 		fill_factor = cJSON_GetObjectItem(json, "FILL_FACTOR") -> valueint;
 		INIT_TIMER(number, channel, freq, fill_factor);
 	}
+	/*----------------------------------------------------------------------------*/
 	// SPI
 	else if(strcmp(command, "INIT_SPI") == 0)
 	{
@@ -95,9 +99,7 @@ void JSON_INPUT(char *text)
 		action = cJSON_GetObjectItem(json, "ACTION") -> valueint;
 		SPI_RECEIVE(number, action);
 	}
-
-
-
+	/*----------------------------------------------------------------------------*/
 	// system commands
 	else if(strcmp(command, "WRITE") == 0)
 	{
@@ -131,7 +133,13 @@ void JSON_INPUT(char *text)
 //		else if (strcmp(type, "I2C"))
 //			SETTINGS.memoryType = I2C_Tx;
 	}
-
+	else if(strcmp(command, "DATA_CHANGE") == 0)
+	{
+		uint8_t action = 0;
+		action = cJSON_GetObjectItem(json, "ACTION") -> valueint;
+		ACTION[action][maxAction[action]].type = Data_change;
+		maxAction[action]++;
+	}
 
 
 	cJSON_Delete(json);

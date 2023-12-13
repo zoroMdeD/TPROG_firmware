@@ -18,34 +18,46 @@ uint32_t ACTION_CYCLE (uint8_t num)
 	uint32_t status = 0;
 	uint8_t  i = 0;                                         // action count
 
-	if (SETTINGS.addrPins1 > 0)                             // если есть адресация выводов
+	if (SETTINGS.addrPins1 > 0)                                                          // если есть адресация выводов и микросхема работает через GPIO
 	{
-		for (uint32_t addr = 0; addr < SETTINGS.memorySize; addr += 1)
+		for (uint32_t addr = 0; addr < SETTINGS.memorySize; addr++)                      // заводим цикл, который будет проходиться по всем адресам
 		{
-			if (SETTINGS.addrPins2 > 0)                     // если используется два порта
+			if (SETTINGS.addrPins2 > 0)                                                  // если используется два порта, то значение адреса необходимо разделить на них обоих
 			{
 				// the address dividing for two ports. Second port may not start with 0
 				uint32_t var = addr >> 16;
 				uint8_t offset = __builtin_ctz(SETTINGS.addrPins2);
 				var <<= offset;
-				HAL_GPIO_WritePin(SETTINGS.addrPort1, SETTINGS.addrPins1, addr);         // может быть поменять на запись в регистр, чтобы сразу и старые значения затирать
-				HAL_GPIO_WritePin(SETTINGS.addrPort2, SETTINGS.addrPins2, var);
+				HAL_GPIO_WritePin(SETTINGS.addrPort1, addr, GPIO_PIN_SET);               // записываем в соответсвующие порты значения полученных адресов
+				HAL_GPIO_WritePin(SETTINGS.addrPort2, var, GPIO_PIN_SET);                // !!!может быть поменять на запись в регистр, чтобы сразу и старые значения затирать
 			}
 			else
-				HAL_GPIO_WritePin(SETTINGS.addrPort1, SETTINGS.addrPins1, addr);
+				HAL_GPIO_WritePin(SETTINGS.addrPort1, addr, GPIO_PIN_SET);               // если порт адреса всего один, то все проще простого
 			/*----------------------------------------------------------------------------*/
-			// action do
+			// action do                                                                 // выполнение действий
 			for(i = 0; i < maxAction[num]; i++)
 			{
-				if (ACTION[num][i].type == GPIO_IN)        // чтение должно быть в массиве на все адреса памяти!!! Тут должен быть цикл
+				if (ACTION[num][i].type == GPIO_IN)
 				{
 					uint16_t data = READ_GPIO(ACTION[num][i].port, ACTION[num][i].pins, 0);
-					if (data != dataTest) status++;        // пока буду тупо сравнивать результат чтения с тестовой записью. В идеале надо отправлять на комп
+					if (data != dataTest) status++;
 				}
 				else if (ACTION[num][i].type == GPIO_OUT)
 					MODIFIC_GPIO(ACTION[num][i].port, ACTION[num][i].pins, ACTION[num][i].status, 0);
 				else if (ACTION[num][i].type == Delay)
 					HAL_Delay(ACTION[num][i].data);
+				else if (ACTION[num][i].type == Data_change)                             // простенький алгоритм для шахматного изменения записываемых данных
+				{
+					if (num == 1)                                                        // если действие это запись, то тогда нужно менять и состояние выводов
+					{
+						HAL_GPIO_WritePin(SETTINGS.dataPort, SETTINGS.dataPins, GPIO_PIN_RESET);
+						HAL_GPIO_WritePin(SETTINGS.dataPort, dataTest, GPIO_PIN_SET);
+					}
+					if (dataTest == 0xAA) dataTest = 0x55;
+					else if (dataTest == 0x55) dataTest = 0xAA;
+				}
+
+
 			}
 			// reset address
 			HAL_GPIO_WritePin(SETTINGS.addrPort1, SETTINGS.addrPins1, GPIO_PIN_RESET);
