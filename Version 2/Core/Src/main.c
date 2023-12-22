@@ -93,41 +93,41 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 //  JSON_INPUT("");
-	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":15,\"TYPE\":\"CONTROL\"}");
-	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":255,\"TYPE\":\"ADDR1\"}");
-	JSON_INPUT("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":16}");
 
-//	Команды
 
-	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTA\",\"PINS\":170,\"STATUS\":1,\"ACTION\":0}");                     // установка данных для записи
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":0}");                       // OE = 0
+//  Инициализация:
 
-//	Действия записи
+  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":7,\"TYPE\":\"CONTROL\"}");
+  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}");
+  	JSON_INPUT("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":16}");
 
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":9,\"STATUS\":0,\"ACTION\":1}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":4,\"STATUS\":1,\"ACTION\":1}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":9,\"STATUS\":1,\"ACTION\":1}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":4,\"STATUS\":0,\"ACTION\":1}");
-	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}");
-	JSON_INPUT("{\"COMMAND\":\"WRITE\"}");
+//  Команды
 
-//	Команды
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":7,\"STATUS\":1,\"ACTION\":0}");
+  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTA\",\"PINS\":170,\"STATUS\":1,\"ACTION\":0}");                     // установка данных для записи
 
-	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":1,\"ACTION\":0}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":1,\"STATUS\":1,\"ACTION\":0}");                      // WE = 1
+//  Действия записи
 
-//	Действия чтения
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":10,\"STATUS\":0,\"ACTION\":2}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":4,\"STATUS\":1,\"ACTION\":2}");
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":0,\"ACTION\":1}");
+	JSON_INPUT("{\"COMMAND\":\"DELAY\",\"TIME\":1,\"ACTION\":1}");
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":1,\"ACTION\":1}");
+  	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}");
+  	JSON_INPUT("{\"COMMAND\":\"WRITE\"}");
 
-	JSON_INPUT("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTA\",\"PINS\":255,\"ACTION\":2}");
+//  Команды
 
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":10,\"STATUS\":1,\"ACTION\":2}");
-	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":4,\"STATUS\":0,\"ACTION\":2}");
-	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}");
-	JSON_INPUT("{\"COMMAND\":\"READ\"}");
+  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":1,\"ACTION\":0}");
+
+//  Действия чтения
+
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":0,\"ACTION\":2}");
+  	JSON_INPUT("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTA\",\"PINS\":255,\"ACTION\":2}");
+  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":1,\"ACTION\":2}");
+  	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}");
+  	JSON_INPUT("{\"COMMAND\":\"READ\"}");
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

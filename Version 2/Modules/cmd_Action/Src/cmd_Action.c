@@ -18,9 +18,11 @@ uint32_t ACTION_CYCLE (uint8_t num)
 	uint32_t status = 0;
 	uint8_t  i = 0;                                         // action count
 
-	if (SETTINGS.addrPins1 > 0)                                                          // если есть адресация выводов и микросхема работает через GPIO
+
+	// с адресами шляпа в плане того, что счет идет до окончания всей памяти, а должно быть с учетом шага!!!!
+	for (uint32_t addr = 0; addr < SETTINGS.memorySize; addr++)                      // заводим цикл, который будет проходиться по всем адресам
 	{
-		for (uint32_t addr = 0; addr < SETTINGS.memorySize; addr++)                      // заводим цикл, который будет проходиться по всем адресам
+		if (SETTINGS.addrPins1 > 0)                                                          // если есть адресация выводов и микросхема работает через GPIO
 		{
 			if (SETTINGS.addrPins2 > 0)                                                  // если используется два порта, то значение адреса необходимо разделить на них обоих
 			{
@@ -63,32 +65,39 @@ uint32_t ACTION_CYCLE (uint8_t num)
 			HAL_GPIO_WritePin(SETTINGS.addrPort1, SETTINGS.addrPins1, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(SETTINGS.addrPort2, SETTINGS.addrPins2, GPIO_PIN_RESET);
 		}
-	}
-	// if using SPI or I2C ...
-	else if (SETTINGS.addrPins1 == 0)
-	{
 		/*----------------------------------------------------------------------------*/
-		// action do
-		for(i = 0; i < maxAction[num]; i++)
+		// if using SPI or I2C ...
+		else if (SETTINGS.addrPins1 == 0)
 		{
-			if(ACTION[num][i].type == GPIO_OUT)
-				MODIFIC_GPIO(ACTION[num][i].port, ACTION[num][i].pins, ACTION[num][i].status, 0);
-			else if (ACTION[num][i].type == Delay)
-				HAL_Delay(ACTION[num][i].data);
-			else if(ACTION[num][i].type == SPI_Rx)
+			// action do
+			for(i = 0; i < maxAction[num]; i++)
 			{
-				uint8_t data = SPI_RECEIVE(1, 0);          // всегда чтение только первого SPI
-				if (data != dataTest) status++;
+				if(ACTION[num][i].type == GPIO_OUT)
+					MODIFIC_GPIO(ACTION[num][i].port, ACTION[num][i].pins, ACTION[num][i].status, 0);
+				else if (ACTION[num][i].type == Delay)
+					HAL_Delay(ACTION[num][i].data);
+				else if(ACTION[num][i].type == SPI_Rx)
+				{
+					uint8_t data = SPI_RECEIVE(1, 0);          // всегда чтение только первого SPI
+					if (data != dataTest) status++;
+//					if (dataTest == 0xAA) dataTest = 0x55;     // шахматный порядок чет херово работает, при чтении все смещено на один байт
+//					else if (dataTest == 0x55) dataTest = 0xAA;
+				}
+				else if(ACTION[num][i].type == SPI_Tx)
+				{
+					SPI_TRANSMIT(1, dataTest, 0);              // либо ACTION[num][i].data
+//					if (dataTest == 0xAA) dataTest = 0x55;
+//					else if (dataTest == 0x55) dataTest = 0xAA;
+				}
+
+	//			else if(ACTION[num][i].type == I2C_Rx)         // доделать I2C!!!
+	//			{
+	//				uint8_t data = I2C_RECEIVE(1, 0);
+	//				if (data != dataTest) status++;
+	//			}
+	//			else if(ACTION[num][i].type == I2C_Tx)
+	//				I2C_TRANSMIT(1, ACTION[num][i].data, 0);
 			}
-			else if(ACTION[num][i].type == SPI_Tx)
-				SPI_TRANSMIT(1, ACTION[num][i].data, 0);
-//			else if(ACTION[num][i].type == I2C_Rx)         // доделать I2C!!!
-//			{
-//				uint8_t data = I2C_RECEIVE(1, 0);
-//				if (data != dataTest) status++;
-//			}
-//			else if(ACTION[num][i].type == I2C_Tx)
-//				I2C_TRANSMIT(1, ACTION[num][i].data, 0);
 		}
 	}
 	return status;
