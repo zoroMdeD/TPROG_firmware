@@ -100,6 +100,18 @@ uint32_t ACTION_CYCLE (uint8_t num)
 			}
 		}
 	}
+
+	// проверка статуса ошибок после чтения
+	if ((num == 2)&&(status == 0))
+	{
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_2, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_0, GPIO_PIN_RESET);
+	}
+	else if ((num == 2)&&(status != 0))
+	{
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_0, GPIO_PIN_SET);
+	}
 	return status;
 }
 

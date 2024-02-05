@@ -94,7 +94,7 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
-extern uint8_t json_com [1024];
+extern char json_com [1024];
 extern uint8_t flag_com;
 uint16_t j = 0;                                           // счетчик для массива json_com, в котором будет собираться команда
 /* USER CODE END PRIVATE_VARIABLES */

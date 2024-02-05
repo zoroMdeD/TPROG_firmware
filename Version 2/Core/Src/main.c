@@ -51,7 +51,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t json_com [1024];
+char json_com [1024];
 uint8_t flag_com = 0;             // флаг того, что команда пришла полностью. =1 значит можно выполнять команду
 /* USER CODE END PV */
 
