@@ -21,13 +21,16 @@
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
-#include "usb_otg.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "structures.h"
 #include "cmd_JSON.h"
+#include <string.h>
+#include <stdlib.h>
+#include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,7 +51,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t json_com [1024];
+uint8_t flag_com = 0;             // флаг того, что команда пришла полностью. =1 значит можно выполнять команду
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,43 +94,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USB_OTG_FS_PCD_Init();
+  MX_I2C1_Init();
+  MX_SPI1_Init();
+  MX_TIM1_Init();
+  MX_SPI2_Init();
+  MX_SPI3_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-//  JSON_INPUT("");
-
-
-//  Инициализация:
-
-  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":7,\"TYPE\":\"CONTROL\"}");
-  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}");
-  	JSON_INPUT("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":16}");
-
-//  Команды
-
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":7,\"STATUS\":1,\"ACTION\":0}");
-  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTA\",\"PINS\":170,\"STATUS\":1,\"ACTION\":0}");                     // установка данных для записи
-
-//  Действия записи
-
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":0,\"ACTION\":1}");
-	JSON_INPUT("{\"COMMAND\":\"DELAY\",\"TIME\":1,\"ACTION\":1}");
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":1,\"ACTION\":1}");
-  	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}");
-  	JSON_INPUT("{\"COMMAND\":\"WRITE\"}");
-
-//  Команды
-
-  	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":1,\"ACTION\":0}");
-
-//  Действия чтения
-
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":0,\"ACTION\":2}");
-  	JSON_INPUT("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTA\",\"PINS\":255,\"ACTION\":2}");
-  	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":1,\"ACTION\":2}");
-  	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}");
-  	JSON_INPUT("{\"COMMAND\":\"READ\"}");
 
   /* USER CODE END 2 */
 
@@ -134,8 +108,40 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
+	{
+		CDC_Transmit_FS(json_com, 1024);                  // отправка обратно по юсб текста команды
+		HAL_Delay(100);
+		CDC_Transmit_FS("\r\n", 2);
+		HAL_Delay(100);
 
-		/* USER CODE END WHILE */
+		JSON_INPUT(json_com);
+		for (uint16_t y = 0; y < 1024; y++)               // затирание массива для новой команды
+			json_com[y] = 0;
+		flag_com = 0;                                     // сбрасывание флага
+	}
+
+
+
+/*----------------------------------------------------------------------------*/
+	// Тест приема
+//	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)
+//	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
+//	{
+//		CDC_Transmit_FS(json_com, 1024);                  // отправка обратно по юсб текста команды
+//		HAL_Delay(100);
+//		CDC_Transmit_FS("\r\n", 2);
+//		HAL_Delay(100);
+//
+//		for (uint16_t y = 0; y < 1024; y++)               // затирание массива для новой команды
+//			json_com[y] = 0;
+//		flag_com = 0;                                     // сбрасывание флага
+//	}
+/*----------------------------------------------------------------------------*/
+//	// Тест отправки сообщения
+//	HAL_Delay(1000);
+//	CDC_Transmit_FS("Hello world ", 12);
+    /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }

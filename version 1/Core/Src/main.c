@@ -136,16 +136,16 @@ int main(void)
   while (1)
   {
 //  CY62167DV30
-  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTE\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTA\",\"PINS2\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
-  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTB\",\"PINS1\":\"[0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0]\"}");
-  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\"}");
-
-  json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"3\",\"WRITE\":\"4\",\"ERASE\":\"0\",\"DELAY\":\"1\"}");
-  json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,1,1,0,1,1,0,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action4\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]\",\"STATUS\":\"High\"}}");
-  json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"}}");
-
-  json_input("{\"CMD\":\"WRITE\"}");
-  json_input("{\"CMD\":\"READ\"}");
+//  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"ADDR\",\"PORT1\":\"PORTE\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\",\"PORT2\":\"PORTA\",\"PINS2\":\"[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]\"}");
+//  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"CONTROL\",\"PORT1\":\"PORTB\",\"PINS1\":\"[0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0]\"}");
+//  json_input("{\"CMD\":\"GPIO\",\"FUNC\":\"DATA\",\"PORT1\":\"PORTF\",\"PINS1\":\"[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]\"}");
+//
+//  json_input("{\"CMD\":\"INFO\",\"MEMORY\":\"0xFFF\",\"READ\":\"3\",\"WRITE\":\"4\",\"ERASE\":\"0\",\"DELAY\":\"1\"}");
+//  json_input("{\"CMD\":\"WRITE_ACTION\",\"Action1\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,1,1,0,1,1,0,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Write\"},\"Action4\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]\",\"STATUS\":\"High\"}}");
+//  json_input("{\"CMD\":\"READ_ACTION\",\"Action1\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0]\",\"STATUS\":\"High\"},\"Action2\":{\"PORT\":\"PORTB\",\"NUMBER\":\"[0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0]\",\"STATUS\":\"Low\"},\"Action3\":{\"PORT\":\"0\",\"NUMBER\":\"0\",\"STATUS\":\"Read\"}}");
+//
+//  json_input("{\"CMD\":\"WRITE\"}");
+//  json_input("{\"CMD\":\"READ\"}");
 
 
 //  24LC04B-ISN
@@ -211,12 +211,12 @@ int main(void)
 
 
 
-	HAL_Delay(10000);
+//	HAL_Delay(10000);
 //	json_input("");
 
 
 	// ф-ция ожидает получение команды с компьютера и отправляет ее обратно (flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS)
-/*	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
+	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
 	{
 		CDC_Transmit_FS(json_com, 1024);                  // отправка обратно по юсб текста команды
 		HAL_Delay(100);
@@ -227,6 +227,10 @@ int main(void)
 			json_com[y] = 0;
 		flag_com = 0;                                     // сбрасывание флага
 	}
+
+//	// Тест отправки сообщения
+//	HAL_Delay(1000);
+//	CDC_Transmit_FS("Hello world ", 12);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
