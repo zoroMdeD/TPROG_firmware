@@ -43,7 +43,7 @@ void INIT_GPIO(GPIO_TypeDef *port, char *mode, uint16_t GPIO_Pin, uint8_t type)
 	else if(strcmp(mode, "OUTPUT") == 0)
 	{
 		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	}
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(port, &GPIO_InitStruct);

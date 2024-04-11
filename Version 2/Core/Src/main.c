@@ -110,17 +110,11 @@ int main(void)
   {
 	if (flag_com == 1)                                    // flag_com выставляется в usbd_cdc_if.c -> CDC_Receive_FS
 	{
-		CDC_Transmit_FS(json_com, 1024);                  // отправка обратно по юсб текста команды
-		HAL_Delay(100);
-		CDC_Transmit_FS("\r\n", 2);
-		HAL_Delay(100);
-
 		JSON_INPUT(json_com);
 		for (uint16_t y = 0; y < 1024; y++)               // затирание массива для новой команды
 			json_com[y] = 0;
 		flag_com = 0;                                     // сбрасывание флага
 	}
-
 
 
 /*----------------------------------------------------------------------------*/
