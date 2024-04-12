@@ -140,7 +140,8 @@ void JSON_INPUT(char *text)
 		ACTION[action][maxAction[action]].type = Data_change;
 		maxAction[action]++;
 	}
-
+	else if(strcmp(command, "DELETE") == 0)
+		cleanStructures();
 
 	cJSON_Delete(json);
 	cJSON_Delete(CMD);

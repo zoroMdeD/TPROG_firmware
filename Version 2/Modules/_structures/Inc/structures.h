@@ -53,6 +53,7 @@ typedef struct
 	uint16_t       status;
 	uint16_t       data;
 } action_settings;
-
-
+/*----------------------------------------------------------------------------*/
+void cleanStructures (void);
+/*----------------------------------------------------------------------------*/
 #endif /* STRUCTURES_INC_STRUCTURES_H_ */
