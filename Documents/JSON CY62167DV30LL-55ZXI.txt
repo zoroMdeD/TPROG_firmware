@@ -1,0 +1,34 @@
+	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTB\",\"PINS\":1016,\"TYPE\":\"CONTROL\"}");
+	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTE\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}");
+	JSON_INPUT("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":255}");
+	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"DATA\"}");
+	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":584,\"STATUS\":1,\"ACTION\":1}");
+	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":432,\"STATUS\":0,\"ACTION\":1}");
+	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":32,\"STATUS\":1,\"ACTION\":1}");
+	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}");
+	JSON_INPUT("{\"COMMAND\":\"WRITE\"}");
+	JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"DATA\"}");
+	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":96,\"STATUS\":1,\"ACTION\":2}");
+	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":408,\"STATUS\":0,\"ACTION\":2}");
+	JSON_INPUT("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTF\",\"PINS\":65535,\"ACTION\":2}");
+	JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":8,\"STATUS\":1,\"ACTION\":2}");
+	JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}");
+	JSON_INPUT("{\"COMMAND\":\"READ\"}");
+
+
+	serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTB\",\"PINS\":1016,\"TYPE\":\"CONTROL\"}\r\n");
+	serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTE\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}\r\n");
+	serialPort.Write("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":255}\r\n");
+	serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"DATA\"}\r\n");
+	serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":584,\"STATUS\":1,\"ACTION\":1}\r\n");
+	serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":432,\"STATUS\":0,\"ACTION\":1}\r\n");
+	serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":32,\"STATUS\":1,\"ACTION\":1}\r\n");
+	serialPort.Write("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}\r\n");
+	serialPort.Write("{\"COMMAND\":\"WRITE\"}\r\n");
+	serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"DATA\"}\r\n");
+	serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":96,\"STATUS\":1,\"ACTION\":2}\r\n");
+	serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":408,\"STATUS\":0,\"ACTION\":2}\r\n");
+	serialPort.Write("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTF\",\"PINS\":65535,\"ACTION\":2}\r\n");
+	serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTB\",\"PINS\":8,\"STATUS\":1,\"ACTION\":2}\r\n");
+	serialPort.Write("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}\r\n");
+	serialPort.Write("{\"COMMAND\":\"READ\"}\r\n");
