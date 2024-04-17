@@ -11,3 +11,16 @@ D:\Reposit\C-sharp\Tprog 0.1\obj\Release\Tprog 0.1.csproj.CoreCompileInputs.cach
 D:\Reposit\C-sharp\Tprog 0.1\obj\Release\Tprog 0.1.csproj.CopyComplete
 D:\Reposit\C-sharp\Tprog 0.1\obj\Release\Tractor 0.1.exe
 D:\Reposit\C-sharp\Tprog 0.1\obj\Release\Tractor 0.1.pdb
+D:\Reposit\TPROG_firmware\Tprog 0.1\bin\Release\Tractor 0.1.exe.config
+D:\Reposit\TPROG_firmware\Tprog 0.1\bin\Release\Tractor 0.1.exe
+D:\Reposit\TPROG_firmware\Tprog 0.1\bin\Release\Tractor 0.1.pdb
+D:\Reposit\TPROG_firmware\Tprog 0.1\bin\Release\NullFX.CRC.dll
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tprog 0.1.csproj.AssemblyReference.cache
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tprog 0.1.csproj.SuggestedBindingRedirects.cache
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tractor_0._1.Form1.resources
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tractor_0._1.Properties.Resources.resources
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tprog 0.1.csproj.GenerateResource.cache
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tprog 0.1.csproj.CoreCompileInputs.cache
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tprog 0.1.csproj.CopyComplete
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tractor 0.1.exe
+D:\Reposit\TPROG_firmware\Tprog 0.1\obj\Release\Tractor 0.1.pdb

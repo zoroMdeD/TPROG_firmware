@@ -24,7 +24,7 @@ namespace Tractor_0._1
             // Добавляем названия в список
             namesList.Add("CY62128ELL-45SXI");
             namesList.Add("CY7C1019DV33-10ZSXI");
-            namesList.Add("");
+            namesList.Add("MB85RS512T");
             namesList.Add("");
 
             // Привязываем список к ComboBox
@@ -74,13 +74,13 @@ namespace Tractor_0._1
                     Test_CY62128ELL45SXI();
                 else if (selectedIndex == 1)
                     CY7C1019DV3310ZSXI();
+                else if (selectedIndex == 2)
+                    MB85RS512T();
 
 
 
-
-
-                // Читаем данные из порта
-                string receivedData = await WaitForResponse(serialPort);
+                    // Читаем данные из порта
+                    string receivedData = await WaitForResponse(serialPort);
                 errorBox.Text = receivedData;
                 serialPort.Close();
             }
@@ -198,6 +198,60 @@ namespace Tractor_0._1
             serialPort.Write("{\"COMMAND\":\"READ\"}\r\n");
         }
 
+        void MB85RS512T ()
+        {
+            serialPort.Write("{\"COMMAND\":\"DELETE\"}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":7,\"TYPE\":\"CONTROL\"}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INIT_SPI\",\"NUMBER\":1}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"10\",\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":8}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":4,\"STATUS\":1,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":6,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"10\",\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":1,\"STATUS\":1,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"10\",\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":1,\"STATUS\":0,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":2,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":0,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":0,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":85,\"ACTION\":1}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"WRITE\"}\r\n");
+            Thread.Sleep(1000);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":1,\"STATUS\":1,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"10\",\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":1,\"STATUS\":0,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":3,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":0,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_TRANSMIT\",\"NUMBER\":1,\"DATA\":0,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"SPI_RECEIVE\",\"NUMBER\":1,\"ACTION\":2}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"READ\"}\r\n");
+            Thread.Sleep(1000);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":1,\"STATUS\":1,\"ACTION\":0}\r\n");
+            Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"10\",\"ACTION\":0}\r\n");
+        }
             private async Task<string> WaitForResponse(SerialPort serialPort)
         {
             string response = "";
