@@ -12,26 +12,28 @@
 
 #include "cmd_timer.h"
 
-//TIM_HandleTypeDef htim1;
-//TIM_HandleTypeDef htim2;
-//TIM_HandleTypeDef htim3;
-//TIM_HandleTypeDef htim4;
-
-// ДОДЕЛЫВАТЬ И ДОДЕЛЫВАТЬ!
 
 /*----------------------------------------------------------------------------*/
-void INIT_TIMER(uint8_t number, uint8_t channel, uint32_t freq, uint8_t fill_factor)
+/**
+ * @brief
+ * @param time
+ * @param action
+ */
+void DELAY (uint32_t time, uint8_t action)
 {
-//	// необходимо вычислить значения предделителя и периода, чтобы обеспечить заданную частоту на выходе ШИМ
-//	uint32_t period = 1, prescale = 0;
-//    uint32_t SysClock = HAL_RCC_GetSysClockFreq() / 2;     // тактирование таймера
-//    // для упрощения, период будет увеличиваться на порядок каждый раз, пока не подбереться нужный предделитель
-//    // эта шляпа может коряво работать с частотами маленькими, типа десятые Гц, но тут минимум 1 Гц.
-//    do
-//    {
-//    	period *= 10;
-//        prescale = SysClock / (period * freq);
-//    } while (prescale > 65000);
-
-
+	if (action == 0)
+	{
+//		HAL_Delay(time);
+		__HAL_TIM_SET_COUNTER(&htim14, 0);
+		while(__HAL_TIM_GET_COUNTER(&htim14) < time);
+	}
+	else
+	{
+		ACTION[action][maxAction[action]].type = Delay;
+		ACTION[action][maxAction[action]].port = 0;
+		ACTION[action][maxAction[action]].pins = 0;
+		ACTION[action][maxAction[action]].status = 0;
+		ACTION[action][maxAction[action]].data = time;
+		maxAction[action]++;                               // up the action counter
+	}
 }

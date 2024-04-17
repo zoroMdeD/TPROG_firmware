@@ -100,8 +100,9 @@ int main(void)
   MX_SPI2_Init();
   MX_SPI3_Init();
   MX_USB_DEVICE_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start(&htim14);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -135,6 +136,27 @@ int main(void)
 //	// Тест отправки сообщения
 //	HAL_Delay(1000);
 //	CDC_Transmit_FS("Hello world ", 12);
+
+
+//	  JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":7,\"TYPE\":\"CONTROL\"}");
+//	  JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}");
+//	  JSON_INPUT("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":16}");
+//	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":7,\"STATUS\":1,\"ACTION\":0}");
+//	  JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
+//	  JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}");
+//	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":0,\"ACTION\":1}");
+//	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":1,\"ACTION\":1}");
+//	  JSON_INPUT("{\"COMMAND\":\"WRITE\"}");
+//	  JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
+//	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":1,\"ACTION\":0}");
+//	  JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}");
+//	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":0,\"ACTION\":2}");
+//	  JSON_INPUT("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTA\",\"PINS\":255,\"ACTION\":2}");
+//	  JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":1,\"ACTION\":2}");
+//	  JSON_INPUT("{\"COMMAND\":\"READ\"}");
+//
+//
+//	  HAL_Delay(100000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

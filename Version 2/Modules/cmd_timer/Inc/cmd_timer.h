@@ -20,7 +20,9 @@ extern action_settings ACTION[4][30];                      // array for some act
 /*----------------------------------------------------------------------------*/
 extern uint8_t  maxAction[4];                              // max actions value
 extern uint32_t dataTest;
+
+extern TIM_HandleTypeDef htim14;
 /*----------------------------------------------------------------------------*/
-void INIT_TIMER(uint8_t number, uint8_t channel, uint32_t freq, uint8_t fill_factor);
+void DELAY (uint32_t time, uint8_t action);
 /*----------------------------------------------------------------------------*/
 #endif /* CMD_TIMER_INC_CMD_TIMER_H_ */

@@ -75,7 +75,7 @@ void JSON_INPUT(char *text)
 		channel = cJSON_GetObjectItem(json, "CHANNEL") -> valueint;
 		freq    = cJSON_GetObjectItem(json, "FREQ") -> valueint;
 		fill_factor = cJSON_GetObjectItem(json, "FILL_FACTOR") -> valueint;
-		INIT_TIMER(number, channel, freq, fill_factor);
+//		INIT_TIMER(number, channel, freq, fill_factor);
 	}
 	/*----------------------------------------------------------------------------*/
 	// SPI
@@ -118,7 +118,7 @@ void JSON_INPUT(char *text)
 		uint8_t action = 0;  uint16_t time = 0;
 		time = cJSON_GetObjectItem(json, "TIME") -> valueint;
 		action = cJSON_GetObjectItem(json, "ACTION") -> valueint;
-//		DELAY(time, action);
+		DELAY(time, action);
 	}
 	else if(strcmp(command, "INFO") == 0)
 	{

@@ -40,12 +40,13 @@ uint32_t ACTION_CYCLE (uint8_t num)
 				if (ACTION[num][i].type == GPIO_IN)
 				{
 					uint16_t data = READ_GPIO(ACTION[num][i].port, ACTION[num][i].pins, 0);
-					if (data != dataTest) status++;
+					if (data != dataTest)
+						status++;
 				}
 				else if (ACTION[num][i].type == GPIO_OUT)
 					MODIFIC_GPIO(ACTION[num][i].port, ACTION[num][i].pins, ACTION[num][i].status, 0);
 				else if (ACTION[num][i].type == Delay)
-					HAL_Delay(ACTION[num][i].data);
+					DELAY(ACTION[num][i].data, 0);
 				else if (ACTION[num][i].type == Data_change)                             // простенький алгоритм для шахматного изменения записываемых данных
 				{
 					if (dataTest == 0xAA) dataTest = 0x55;
@@ -71,11 +72,12 @@ uint32_t ACTION_CYCLE (uint8_t num)
 				if(ACTION[num][i].type == GPIO_OUT)
 					MODIFIC_GPIO(ACTION[num][i].port, ACTION[num][i].pins, ACTION[num][i].status, 0);
 				else if (ACTION[num][i].type == Delay)
-					HAL_Delay(ACTION[num][i].data);
+					DELAY(ACTION[num][i].data, 0);
 				else if(ACTION[num][i].type == SPI_Rx)
 				{
 					uint8_t data = SPI_RECEIVE(1, 0);          // всегда чтение только первого SPI
-					if (data != dataTest) status++;
+					if (data != dataTest)
+						status++;
 					if (dataTest == 0xAA) dataTest = 0x55;     // шахматный порядок чет херово работает, при чтении все смещено на один байт
 					else if (dataTest == 0x55) dataTest = 0xAA;
 				}

@@ -1,0 +1,13 @@
+D:\Reposit\C-sharp\Tractor 0.1\bin\Debug\Tractor 0.1.exe.config
+D:\Reposit\C-sharp\Tractor 0.1\bin\Debug\Tractor 0.1.exe
+D:\Reposit\C-sharp\Tractor 0.1\bin\Debug\Tractor 0.1.pdb
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.csproj.AssemblyReference.cache
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.csproj.SuggestedBindingRedirects.cache
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor_0._1.Form1.resources
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor_0._1.Properties.Resources.resources
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.csproj.GenerateResource.cache
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.csproj.CoreCompileInputs.cache
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.exe
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.pdb
+D:\Reposit\C-sharp\Tractor 0.1\bin\Debug\NullFX.CRC.dll
+D:\Reposit\C-sharp\Tractor 0.1\obj\Debug\Tractor 0.1.csproj.CopyComplete
