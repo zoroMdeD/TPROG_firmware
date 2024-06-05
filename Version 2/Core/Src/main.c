@@ -138,6 +138,36 @@ int main(void)
 //	CDC_Transmit_FS("Hello world ", 12);
 
 
+
+//JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":15,\"TYPE\":\"CONTROL\"}");
+//JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}");
+//JSON_INPUT("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":255}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":0}");
+//JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
+//
+//// write
+//JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":0,\"ACTION\":1}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":10,\"STATUS\":1,\"ACTION\":1}");
+//JSON_INPUT("{\"COMMAND\":\"DELAY\",\"TIME\":\"50\",\"ACTION\":1}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":1}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":1}");
+//JSON_INPUT("{\"COMMAND\":\"WRITE\"}");
+//
+//JSON_INPUT("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":0}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":0}");
+//
+//// read
+//JSON_INPUT("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":9,\"STATUS\":0,\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":6,\"STATUS\":1,\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"DELAY\",\"TIME\":\"50\",\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTA\",\"PINS\":255,\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":2}");
+//JSON_INPUT("{\"COMMAND\":\"READ\"}");
+//
 //	HAL_Delay(100000);
     /* USER CODE END WHILE */
 

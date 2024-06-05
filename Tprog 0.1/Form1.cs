@@ -24,8 +24,9 @@ namespace Tractor_0._1
             // Добавляем названия в список
             namesList.Add("CY62128ELL-45SXI");
             namesList.Add("CY7C1019DV33-10ZSXI");
+            namesList.Add("CY7C1069G30-10ZSXI");
             namesList.Add("MB85RS512T");
-            namesList.Add("");
+            
 
             // Привязываем список к ComboBox
             memoryBox.DataSource = namesList;
@@ -75,6 +76,8 @@ namespace Tractor_0._1
                 else if (selectedIndex == 1)
                     CY7C1019DV3310ZSXI();
                 else if (selectedIndex == 2)
+                    CY7C1069G30();
+                else if (selectedIndex == 3)
                     MB85RS512T();
 
 
@@ -182,7 +185,7 @@ namespace Tractor_0._1
             serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":3,\"STATUS\":1,\"ACTION\":1}\r\n");
             Thread.Sleep(100);
             serialPort.Write("{\"COMMAND\":\"WRITE\"}\r\n");
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
             serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}\r\n");
             Thread.Sleep(100);
             serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":1,\"ACTION\":0}\r\n");
@@ -196,6 +199,37 @@ namespace Tractor_0._1
             serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":1,\"ACTION\":2}\r\n");
             Thread.Sleep(100);
             serialPort.Write("{\"COMMAND\":\"READ\"}\r\n");
+        }
+
+        void CY7C1069G30()
+        {
+            serialPort.Write("{\"COMMAND\":\"DELETE\"}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTC\",\"PINS\":15,\"TYPE\":\"CONTROL\"}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTF\",\"PINS\":65535,\"TYPE\":\"ADDR1\"}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INFO\",\"MEMORY\":65535,\"STEP\":255}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":0}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"OUTPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}\r\n"); Thread.Sleep(100);
+
+            serialPort.Write("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":1}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":5,\"STATUS\":0,\"ACTION\":1}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":10,\"STATUS\":1,\"ACTION\":1}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"50\",\"ACTION\":1}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":1}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":1}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"WRITE\"}\r\n"); Thread.Sleep(1000);
+
+            serialPort.Write("{\"COMMAND\":\"INIT_GPIO\",\"MODE\":\"INPUT\",\"PORT\":\"PORTA\",\"PINS\":255,\"TYPE\":\"DATA\"}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":0}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":0}\r\n"); Thread.Sleep(100);
+
+            serialPort.Write("{\"COMMAND\":\"DATA_CHANGE\",\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":9,\"STATUS\":0,\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":6,\"STATUS\":1,\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"DELAY\",\"TIME\":\"50\",\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"READ_GPIO\",\"PORT\":\"PORTA\",\"PINS\":255,\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":2,\"STATUS\":0,\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"MODIFIC_GPIO\",\"PORT\":\"PORTC\",\"PINS\":13,\"STATUS\":1,\"ACTION\":2}\r\n"); Thread.Sleep(100);
+            serialPort.Write("{\"COMMAND\":\"READ\"}\r\n"); Thread.Sleep(100);
         }
 
         void MB85RS512T ()
